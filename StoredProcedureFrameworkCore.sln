@@ -3,13 +3,15 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 14
 VisualStudioVersion = 14.0.25420.1
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "Dibware.StoredProcedureFrameworkCore", "Dibware.StoredProcedureFrameworkCore\Dibware.StoredProcedureFrameworkCore.xproj", "{A732AC88-DE96-4986-87EE-FB97265241B4}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{626760D6-BF0E-46F2-B585-62D6B9460F76}"
 EndProject
-Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "Dibware.StoredProcedureFrameworkCore.UnitTests", "Dibware.StoredProcedureFrameworkCore.Tests\Dibware.StoredProcedureFrameworkCore.UnitTests.xproj", "{40F34E67-0CFF-479F-AD7C-57638E36C15B}"
+Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "Dibware.StoredProcedureFrameworkCore", "src\Dibware.StoredProcedureFrameworkCore\Dibware.StoredProcedureFrameworkCore.xproj", "{A732AC88-DE96-4986-87EE-FB97265241B4}"
 EndProject
-Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "Dibware.StoredProcedureFrameworkCoreForEF", "Dibware.StoredProcedureFrameworkCoreForEF\Dibware.StoredProcedureFrameworkCoreForEF.xproj", "{67F75A96-55DE-455B-A201-2965ADC2D46A}"
+Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "Dibware.StoredProcedureFrameworkCore.UnitTests", "src\Dibware.StoredProcedureFrameworkCore.Tests\Dibware.StoredProcedureFrameworkCore.UnitTests.xproj", "{40F34E67-0CFF-479F-AD7C-57638E36C15B}"
 EndProject
-Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "Dibware.StoredProcedureFrameworkCoreForEF.UnitTests", "Dibware.StoredProcedureFrameworkCoreForEF.UnitTests\Dibware.StoredProcedureFrameworkCoreForEF.UnitTests.xproj", "{3D176B52-9651-4DB7-907F-7301EF296E55}"
+Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "Dibware.StoredProcedureFrameworkCoreForEF", "src\Dibware.StoredProcedureFrameworkCoreForEF\Dibware.StoredProcedureFrameworkCoreForEF.xproj", "{67F75A96-55DE-455B-A201-2965ADC2D46A}"
+EndProject
+Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "Dibware.StoredProcedureFrameworkCoreForEF.UnitTests", "src\Dibware.StoredProcedureFrameworkCoreForEF.UnitTests\Dibware.StoredProcedureFrameworkCoreForEF.UnitTests.xproj", "{3D176B52-9651-4DB7-907F-7301EF296E55}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -36,5 +38,11 @@ Global
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{A732AC88-DE96-4986-87EE-FB97265241B4} = {626760D6-BF0E-46F2-B585-62D6B9460F76}
+		{40F34E67-0CFF-479F-AD7C-57638E36C15B} = {626760D6-BF0E-46F2-B585-62D6B9460F76}
+		{67F75A96-55DE-455B-A201-2965ADC2D46A} = {626760D6-BF0E-46F2-B585-62D6B9460F76}
+		{3D176B52-9651-4DB7-907F-7301EF296E55} = {626760D6-BF0E-46F2-B585-62D6B9460F76}
 	EndGlobalSection
 EndGlobal
