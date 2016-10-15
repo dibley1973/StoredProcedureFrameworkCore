@@ -4,48 +4,50 @@ using System.Reflection;
 
 namespace Dibware.StoredProcedureFrameworkCore
 {
-    public class StoredProcedureContext
+    public abstract class StoredProcedureContext
     {
-        private static List<PropertyInfo> _storedProcedureProperties;
+        private readonly List<PropertyInfo> _storedProcedureProperties;
         private readonly IStoredProcedureExecutor _storedProcedureExecutor;
 
-        static StoredProcedureContext()
-        {
-            _storedProcedureProperties = GetPropertiesWhichAreStoredProcedures();
-        }
-
-        public StoredProcedureContext(IStoredProcedureExecutor storedProcedureExecutor)
+        protected StoredProcedureContext(IStoredProcedureExecutor storedProcedureExecutor)
         {
             if (storedProcedureExecutor == null) throw new ArgumentNullException(nameof(storedProcedureExecutor));
 
             _storedProcedureExecutor = storedProcedureExecutor;
+            _storedProcedureProperties = GetPropertiesWhichAreStoredProcedures();
 
-            InitializeStoredProcedures();
+            InitializeStoredProcedureProperties();
         }
 
-        private void InitializeStoredProcedures()
+        private void InitializeStoredProcedureProperties()
         {
-            //var assembly = GetType().GetTypeInfo().Assembly;
-            //var properties = GetType().GetTypeInfo().DeclaredProperties;
-            //var storedProcedureProperties = GetPropertiesWhichAreStoredProcedures();
-
             foreach (var storedProcedureProperty in _storedProcedureProperties)
             {
-                //storedProcedureProperty.GetCustomAttribute()
-
-                //CustomAttributeData c = new CustomAttributeData();
-                //c.Constructor
-                //var constructorInfo = storedProcedureProperty.Getc PropertyType.GetConstructor(new[] { contextType });
-
-
+                InitializeStoredProcedureProperty(storedProcedureProperty);
             }
-
-            throw new NotImplementedException();
         }
 
-        private static List<PropertyInfo> GetPropertiesWhichAreStoredProcedures()
+        private void InitializeStoredProcedureProperty(PropertyInfo storedProcedurePropertyInfo)
         {
-            var properties = typeof(StoredProcedureContext).GetTypeInfo().DeclaredProperties;
+            var executerType = _storedProcedureExecutor.GetType();
+            var constructorInfo = storedProcedurePropertyInfo.PropertyType.GetConstructor(new[] { executerType });
+            if (constructorInfo == null) return;
+
+            object procedure = constructorInfo.Invoke(new object[] { _storedProcedureExecutor });
+            //SetStoredProcedureName(storedProcedurePropertyInfo, procedure);
+            //SetStoredProcedureSchemaName(storedProcedurePropertyInfo, procedure);
+
+            storedProcedurePropertyInfo.SetValue(this, procedure, null);
+        }
+
+        private List<PropertyInfo> GetPropertiesWhichAreStoredProcedures()
+        {
+            //var properties = GetType().GetTypeInfo().DeclaredProperties;
+            var properties = GetType().GetProperties(
+                BindingFlags.Public |
+                BindingFlags.NonPublic |
+                BindingFlags.Instance);
+
             var storedProcedureProperties = new List<PropertyInfo>();
 
             foreach (var propertyInfo in properties)
@@ -58,5 +60,46 @@ namespace Dibware.StoredProcedureFrameworkCore
 
             return storedProcedureProperties;
         }
+
+
+        //private static string GetStoredProcedureName(PropertyInfo storedProcedurePropertyInfo)
+        //{
+        //    Maybe<string> overriddenProcedureNameResult =
+        //        GetOverriddenStoredProcedureName(storedProcedurePropertyInfo)
+        //            .Or(GetOverriddenStoredProcedureName(storedProcedurePropertyInfo.PropertyType));
+
+        //    string defaultProcedureName = storedProcedurePropertyInfo.Name;
+        //    string procedureName = overriddenProcedureNameResult.SingleOrDefault(defaultProcedureName);
+
+        //    return procedureName;
+        //}
+
+
+        //private static void SetStoredProcedureName(PropertyInfo storedProcedurePropertyInfo, object procedure)
+        //{
+        //    var name = GetStoredProcedureName(storedProcedurePropertyInfo);
+
+        //    if (name != null)
+        //    {
+        //        ((StoredProcedureBase)procedure).SetProcedureName(name);
+        //    }
+        //    else
+        //    {
+        //        throw new NullReferenceException("procedure name was not set");
+        //    }
+        //}
+
+        //private static void SetStoredProcedureSchemaName(PropertyInfo storedProcedurePropertyInfo, object procedure)
+        //{
+        //    Maybe<string> overriddenProcedureSchemaResult =
+        //        GetOverriddenStoredProcedureSchemaName(storedProcedurePropertyInfo)
+        //        .Or(GetOverriddenStoredProcedureSchemaName(storedProcedurePropertyInfo.PropertyType));
+
+        //    if (overriddenProcedureSchemaResult.HasItem)
+        //    {
+        //        ((StoredProcedureBase)procedure).SetSchemaName(overriddenProcedureSchemaResult.Single());
+        //    }
+        //}
+
     }
 }
