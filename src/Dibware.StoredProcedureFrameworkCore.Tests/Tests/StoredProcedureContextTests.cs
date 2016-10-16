@@ -20,13 +20,33 @@ namespace Dibware.StoredProcedureFrameworkCore.Tests.Tests
             // ASSERT
             actual.Should().NotBeNull();
         }
-    }
 
-    public class FakeStoredProcedureExecutor : IStoredProcedureExecutor
-    {
-        public TResultSetType ExecuteStoredProcedure<TResultSetType>(StoredProcedure<TResultSetType> procedure)
+        [TestMethod]
+        public void ProcedurePropertyWithoutNameAttribute_AfterInstantiation_HasCorrectName()
         {
-            throw new System.NotImplementedException();
+            // ARRANGE
+            IStoredProcedureExecutor executer = new FakeStoredProcedureExecutor();
+            var context = new FakeStoredProcedureContext(executer);
+
+            // ACT
+            var actual = context.Procedure1;
+
+            // ASSERT
+            actual.ProcedureName.Should().Be("Procedure1");
+        }
+
+        [TestMethod]
+        public void ProcedurePropertyWithNameAttribute_AfterInstantiation_HasCorrectName()
+        {
+            // ARRANGE
+            IStoredProcedureExecutor executer = new FakeStoredProcedureExecutor();
+            var context = new FakeStoredProcedureContext(executer);
+
+            // ACT
+            var actual = context.Procedure2;
+
+            // ASSERT
+            actual.ProcedureName.Should().Be("ProcedureX");
         }
     }
 }

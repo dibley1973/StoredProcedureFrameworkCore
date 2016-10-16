@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using Dibware.StoredProcedureFrameworkCore.StoredProcedureAttributes;
 
 namespace Dibware.StoredProcedureFrameworkCore.Tests.Fakes
 {
@@ -9,6 +10,8 @@ namespace Dibware.StoredProcedureFrameworkCore.Tests.Fakes
         { }
 
         public StoredProcedure<List<string>> Procedure1 { get; private set; }
+        [Name("ProcedureX")]
+        public StoredProcedure<List<string>> Procedure2 { get; private set; }
         public List<string> NotAStoredProcedure { get; private set; }
         public string AlsoNotAStoredProcedure { get; private set; }
     }
