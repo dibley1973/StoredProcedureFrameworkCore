@@ -52,6 +52,13 @@ namespace Dibware.StoredProcedureFrameworkCore
 
             foreach (var propertyInfo in properties)
             {
+                if (!propertyInfo.PropertyType.IsConstructedGenericType) continue;
+
+                if (typeof(StoredProcedure).IsAssignableFrom(propertyInfo.PropertyType))
+                {
+                    storedProcedureProperties.Add(propertyInfo);
+                }
+
                 if (propertyInfo.PropertyType == typeof(StoredProcedure))
                 {
                     storedProcedureProperties.Add(propertyInfo);
@@ -61,6 +68,19 @@ namespace Dibware.StoredProcedureFrameworkCore
             return storedProcedureProperties;
         }
 
+        //static bool IsSubclassOfRawGeneric(Type generic, Type toCheck)
+        //{
+        //    while (toCheck != null && toCheck != typeof(object))
+        //    {
+        //        var cur = toCheck.IsGenericType ? toCheck.GetGenericTypeDefinition() : toCheck;
+        //        if (generic == cur)
+        //        {
+        //            return true;
+        //        }
+        //        toCheck = toCheck.BaseType;
+        //    }
+        //    return false;
+        //}
 
         //private static string GetStoredProcedureName(PropertyInfo storedProcedurePropertyInfo)
         //{
