@@ -70,10 +70,15 @@ namespace Dibware.StoredProcedureFrameworkCore.Helpers.AttributeHelpers
         private void SetAttributeIfExists()
         {
             //_attribute = _property.PropertyType.GetProperties().Where(prop => Attribute.IsDefined(prop, typeof(NameAttribute)));
-            var a = _property.PropertyType.GetProperties().First(prop => prop.IsDefined(typeof(NameAttribute)));
+            var properties = _property.PropertyType.GetProperties().Where(prop => prop.IsDefined(typeof(NameAttribute))).ToList();
 
-
-            _attribute = _property.PropertyType.GetTypeInfo().GetCustomAttribute<NameAttribute>();
+            if (properties.Any())
+            {
+                var property = properties.First();
+                _attribute = property.GetType().GetTypeInfo().GetCustomAttribute<NameAttribute>();
+                //_attribute = attributes.First() as NameAttribute;
+                //_attribute = _property.PropertyType.GetTypeInfo().GetCustomAttribute<NameAttribute>();
+            }
         }
         #endregion
     }
