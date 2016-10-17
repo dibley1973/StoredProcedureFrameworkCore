@@ -69,16 +69,21 @@ namespace Dibware.StoredProcedureFrameworkCore.Helpers.AttributeHelpers
 
         private void SetAttributeIfExists()
         {
-            //_attribute = _property.PropertyType.GetProperties().Where(prop => Attribute.IsDefined(prop, typeof(NameAttribute)));
-            var properties = _property.PropertyType.GetProperties().Where(prop => prop.IsDefined(typeof(NameAttribute))).ToList();
+            var nameAttributeNotDefined = _property.IsDefined(typeof(NameAttribute));
+            if (nameAttributeNotDefined) return;
 
-            if (properties.Any())
-            {
-                var property = properties.First();
-                _attribute = property.GetType().GetTypeInfo().GetCustomAttribute<NameAttribute>();
-                //_attribute = attributes.First() as NameAttribute;
-                //_attribute = _property.PropertyType.GetTypeInfo().GetCustomAttribute<NameAttribute>();
-            }
+            _attribute = _property.GetType().GetTypeInfo().GetCustomAttribute<NameAttribute>();
+
+            //var s = _property.PropertyType.GetProperties().Where(prop => Attribute.IsDefined(prop, typeof(NameAttribute)));
+            //var properties = _property.PropertyType.GetProperties().Where(prop => prop.IsDefined(typeof(NameAttribute))).ToList();
+            
+            //if (properties.Any())
+            //{
+            //    var property = properties.First();
+            //    _attribute = property.GetType().GetTypeInfo().GetCustomAttribute<NameAttribute>();
+            //    //_attribute = attributes.First() as NameAttribute;
+            //    //_attribute = _property.PropertyType.GetTypeInfo().GetCustomAttribute<NameAttribute>();
+            //}
         }
         #endregion
     }
