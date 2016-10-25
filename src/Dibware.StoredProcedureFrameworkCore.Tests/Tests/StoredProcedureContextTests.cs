@@ -48,5 +48,33 @@ namespace Dibware.StoredProcedureFrameworkCore.Tests.Tests
             // ASSERT
             actual.ProcedureName.Should().Be("ProcedureX");
         }
+
+        [TestMethod]
+        public void ProcedurePropertyWithoutSchemaAttribute_AfterInstantiation_HasDefaultSchema()
+        {
+            // ARRANGE
+            IStoredProcedureExecutor executer = new FakeStoredProcedureExecutor();
+            var context = new FakeStoredProcedureContext(executer);
+
+            // ACT
+            var actual = context.Procedure1;
+
+            // ASSERT
+            actual.SchemaName.Should().Be("dbo");
+        }
+
+        [TestMethod]
+        public void ProcedurePropertyWithSchemaAttribute_AfterInstantiation_HasCorrectSchema()
+        {
+            // ARRANGE
+            IStoredProcedureExecutor executer = new FakeStoredProcedureExecutor();
+            var context = new FakeStoredProcedureContext(executer);
+
+            // ACT
+            var actual = context.Procedure3;
+
+            // ASSERT
+            actual.SchemaName.Should().Be("log");
+        }
     }
 }

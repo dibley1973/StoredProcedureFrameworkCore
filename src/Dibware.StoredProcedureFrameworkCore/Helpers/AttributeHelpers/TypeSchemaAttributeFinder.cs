@@ -7,27 +7,28 @@ using Dibware.StoredProcedureFrameworkCore.StoredProcedureAttributes;
 
 namespace Dibware.StoredProcedureFrameworkCore.Helpers.AttributeHelpers
 {
-    public class TypeNameAttributeFinder
+    public class TypeSchemaAttributeFinder
     {
         #region Fields
 
         private readonly Type _type;
-        private NameAttribute _attribute;
+        private SchemaAttribute _attribute;
 
         #endregion
 
         #region Construtors
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="TypeNameAttributeFinder"/> class.
+        /// Initializes a new instance of the <see cref="TypeSchemaAttributeFinder"/> class.
         /// </summary>
         /// <param name="type">The type.</param>
         /// <exception cref="System.ArgumentNullException">type</exception>
-        public TypeNameAttributeFinder(Type type)
+        public TypeSchemaAttributeFinder(Type type)
         {
             if (type == null) throw new ArgumentNullException(nameof(type));
 
             _type = type;
+
             SetAttributeIfExists();
         }
 
@@ -52,13 +53,13 @@ namespace Dibware.StoredProcedureFrameworkCore.Helpers.AttributeHelpers
         /// <value>
         /// The result.
         /// </value>
-        public Maybe<NameAttribute> GetResult()
+        public Maybe<SchemaAttribute> GetResult()
         {
             if (!HasFoundAttribute)
             {
-                return new Maybe<NameAttribute>();
+                return new Maybe<SchemaAttribute>();
             }
-            return new Maybe<NameAttribute>(_attribute);
+            return new Maybe<SchemaAttribute>(_attribute);
         }
 
         #endregion
@@ -67,10 +68,9 @@ namespace Dibware.StoredProcedureFrameworkCore.Helpers.AttributeHelpers
 
         private void SetAttributeIfExists()
         {
-            IEnumerable<NameAttribute> attributes = _type.GetTypeInfo().GetCustomAttributes<NameAttribute>();
+            IEnumerable<SchemaAttribute> attributes = _type.GetTypeInfo().GetCustomAttributes<SchemaAttribute>();
             _attribute = attributes.FirstOrDefault();
         }
-
         #endregion
     }
 }

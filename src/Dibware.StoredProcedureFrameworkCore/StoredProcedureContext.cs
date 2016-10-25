@@ -40,7 +40,7 @@ namespace Dibware.StoredProcedureFrameworkCore
 
             object procedure = constructorInfo.Invoke(new object[] { _storedProcedureExecutor });
             SetStoredProcedureName(storedProcedurePropertyInfo, procedure);
-            //SetStoredProcedureSchemaName(storedProcedurePropertyInfo, procedure);
+            SetStoredProcedureSchemaName(storedProcedurePropertyInfo, procedure);
 
             storedProcedurePropertyInfo.SetValue(this, procedure, null);
         }
@@ -116,8 +116,8 @@ namespace Dibware.StoredProcedureFrameworkCore
 
         //private static Maybe<string> GetOverriddenStoredProcedureSchemaName(Type storedProcedurePropertyType)
         //{
-        //   Maybe<SchemaAttribute> finderResult =
-        //        new TypeSchemaAttributeFinder(storedProcedurePropertyType).GetResult();
+        //    Maybe<SchemaAttribute> finderResult =
+        //         new TypeSchemaAttributeFinder(storedProcedurePropertyType).GetResult();
 
         //    return finderResult.HasItem
         //        ? new Maybe<string>(finderResult.Single().Value)
@@ -138,17 +138,27 @@ namespace Dibware.StoredProcedureFrameworkCore
             }
         }
 
-        //private static void SetStoredProcedureSchemaName(PropertyInfo storedProcedurePropertyInfo, object procedure)
-        //{
-        //    Maybe<string> overriddenProcedureSchemaResult =
-        //        GetOverriddenStoredProcedureSchemaName(storedProcedurePropertyInfo)
-        //        .Or(GetOverriddenStoredProcedureSchemaName(storedProcedurePropertyInfo.PropertyType));
+        private static void SetStoredProcedureSchemaName(PropertyInfo storedProcedurePropertyInfo, object procedure)
+        {
+            //string name = string.Empty;
+            //
+            //Maybe<string> overriddenProcedureSchemaResult =
+            //    GetOverriddenStoredProcedureSchemaName(storedProcedurePropertyInfo)
+            //    .Or(GetOverriddenStoredProcedureSchemaName(storedProcedurePropertyInfo.PropertyType));
 
-        //    if (overriddenProcedureSchemaResult.HasItem)
-        //    {
-        //        ((StoredProcedureBase)procedure).SetSchemaName(overriddenProcedureSchemaResult.Single());
-        //    }
-        //}
+            //if (overriddenProcedureSchemaResult.HasItem)
+            //{
+            //    name = (overriddenProcedureSchemaResult.Single();
+            //}
+            //else
+            //{
+            //    if(_storedProcedureExecutor.HasDefaultSchemaName)
+            //    {
+            //        name = _storedProcedureExecutor.DefaultSchemaName;
+            //    }
+            //}
+            //((StoredProcedureBase)procedure).SetSchemaName(name);
+        }
 
     }
 }
