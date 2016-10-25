@@ -3,8 +3,8 @@ using Dibware.StoredProcedureFrameworkCore.StoredProcedureAttributes;
 
 namespace Dibware.StoredProcedureFrameworkCore.Helpers.AttributeHelpers
 {
-    public class PropertyNameAttributeFinder : PropertyAttributeFinder<NameAttribute>
+    public class PropertySchemaAttributeFinder : PropertyAttributeFinder<SchemaAttribute>
     {
-        public PropertyNameAttributeFinder(PropertyInfo property) : base(property) { }
+        public PropertySchemaAttributeFinder(PropertyInfo property)  : base(property) { }
     }
 }
