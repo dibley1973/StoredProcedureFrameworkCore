@@ -1,4 +1,4 @@
-﻿namespace Dibware.StoredProcedureFrameworkCore.Tests.Tests
+﻿namespace Dibware.StoredProcedureFrameworkCore.Tests.Fakes
 {
     public class FakeStoredProcedureExecutor : IStoredProcedureExecutor
     {

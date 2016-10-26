@@ -18,7 +18,7 @@ namespace Dibware.StoredProcedureFrameworkCore
         /// <value>
         /// The name of the schema.
         /// </value>
-        public string SchemaName { get; }
+        public string SchemaName { get; private set;  }
 
         /// <summary>
         /// Sets the procedure name.
@@ -31,10 +31,25 @@ namespace Dibware.StoredProcedureFrameworkCore
         public void SetProcedureName(string procedureName)
         {
             // Validate argument
-            if (procedureName == null) throw new ArgumentNullException("procedureName");
-            if (procedureName == string.Empty) throw new ArgumentOutOfRangeException("procedureName");
+            if (procedureName == null) throw new ArgumentNullException(nameof(procedureName));
+            if (procedureName == string.Empty) throw new ArgumentOutOfRangeException(nameof(procedureName));
 
             ProcedureName = procedureName;
+        }
+
+        /// <summary>
+        /// Sets the schema name.
+        /// </summary>
+        /// <param name="schemaName">The name of the schema.</param>
+        /// <returns></returns>
+        /// <exception cref="System.ArgumentNullException">schemaName</exception>
+        public void SetSchemaName(string schemaName)
+        {
+            // Validate argument
+            if (schemaName == null) throw new ArgumentNullException(nameof(schemaName));
+            if (schemaName == string.Empty) throw new ArgumentOutOfRangeException(nameof(schemaName));
+
+            SchemaName = schemaName;
         }
     }
 

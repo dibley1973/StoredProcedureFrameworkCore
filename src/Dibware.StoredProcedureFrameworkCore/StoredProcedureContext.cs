@@ -4,8 +4,8 @@ using System.Reflection;
 using Dibware.StoredProcedureFrameworkCore.Extensions;
 using Dibware.StoredProcedureFrameworkCore.Generics;
 using Dibware.StoredProcedureFrameworkCore.Helpers.AttributeHelpers;
-using Dibware.StoredProcedureFrameworkCore.StoredProcedureAttributes;
 using System.Linq;
+using Dibware.StoredProcedureFrameworkCore.StoredProcedureAttributes;
 
 namespace Dibware.StoredProcedureFrameworkCore
 {
@@ -84,20 +84,19 @@ namespace Dibware.StoredProcedureFrameworkCore
 
         private static string GetStoredProcedureName(PropertyInfo storedProcedurePropertyInfo)
         {
-            Maybe<string> overriddenProcedureNameResult =
+            var overriddenProcedureNameResult =
                 GetOverriddenStoredProcedureName(storedProcedurePropertyInfo)
                     .Or(GetOverriddenStoredProcedureName(storedProcedurePropertyInfo.PropertyType));
 
-            string defaultProcedureName = storedProcedurePropertyInfo.Name;
-            string procedureName = overriddenProcedureNameResult.SingleOrDefault(defaultProcedureName);
+            var defaultProcedureName = storedProcedurePropertyInfo.Name;
+            var procedureName = overriddenProcedureNameResult.SingleOrDefault(defaultProcedureName);
 
             return procedureName;
         }
 
         private static Maybe<string> GetOverriddenStoredProcedureName(PropertyInfo storedProcedurePropertyInfo)
         {
-            Maybe<NameAttribute> finderResult =
-                new PropertyNameAttributeFinder(storedProcedurePropertyInfo).GetResult();
+            var finderResult = new PropertyNameAttributeFinder(storedProcedurePropertyInfo).GetResult();
 
             return finderResult.HasItem
                 ? new Maybe<string>(finderResult.Single().Value)
@@ -106,23 +105,32 @@ namespace Dibware.StoredProcedureFrameworkCore
 
         private static Maybe<string> GetOverriddenStoredProcedureName(Type storedProcedurePropertyType)
         {
-            Maybe<NameAttribute> finderResult =
-                new TypeNameAttributeFinder(storedProcedurePropertyType).GetResult();
+            var finderResult = new TypeNameAttributeFinder(storedProcedurePropertyType).GetResult();
 
             return finderResult.HasItem
                 ? new Maybe<string>(finderResult.Single().Value)
                 : new Maybe<string>();
         }
 
-        //private static Maybe<string> GetOverriddenStoredProcedureSchemaName(Type storedProcedurePropertyType)
-        //{
-        //    Maybe<SchemaAttribute> finderResult =
-        //         new TypeSchemaAttributeFinder(storedProcedurePropertyType).GetResult();
+        private static Maybe<string> GetOverriddenStoredProcedureSchemaName(PropertyInfo storedProcedurePropertyInfo)
+        {
+            var finderResult =
+               new PropertySchemaAttributeFinder(storedProcedurePropertyInfo).GetResult();
 
-        //    return finderResult.HasItem
-        //        ? new Maybe<string>(finderResult.Single().Value)
-        //        : new Maybe<string>();
-        //}
+            return finderResult.HasItem
+                ? new Maybe<string>(finderResult.Single().Value)
+                : new Maybe<string>();
+        }
+
+        private static Maybe<string> GetOverriddenStoredProcedureSchemaName(Type storedProcedurePropertyType)
+        {
+            var finderResult =
+                 new TypeSchemaAttributeFinder(storedProcedurePropertyType).GetResult();
+
+            return finderResult.HasItem
+                ? new Maybe<string>(finderResult.Single().Value)
+                : new Maybe<string>();
+        }
 
         private static void SetStoredProcedureName(PropertyInfo storedProcedurePropertyInfo, object procedure)
         {
@@ -138,26 +146,24 @@ namespace Dibware.StoredProcedureFrameworkCore
             }
         }
 
-        private static void SetStoredProcedureSchemaName(PropertyInfo storedProcedurePropertyInfo, object procedure)
+        private void SetStoredProcedureSchemaName(PropertyInfo storedProcedurePropertyInfo, object procedure)
         {
-            //string name = string.Empty;
-            //
-            //Maybe<string> overriddenProcedureSchemaResult =
-            //    GetOverriddenStoredProcedureSchemaName(storedProcedurePropertyInfo)
-            //    .Or(GetOverriddenStoredProcedureSchemaName(storedProcedurePropertyInfo.PropertyType));
+            string name = string.Empty;
 
-            //if (overriddenProcedureSchemaResult.HasItem)
-            //{
-            //    name = (overriddenProcedureSchemaResult.Single();
-            //}
-            //else
-            //{
-            //    if(_storedProcedureExecutor.HasDefaultSchemaName)
-            //    {
-            //        name = _storedProcedureExecutor.DefaultSchemaName;
-            //    }
-            //}
-            //((StoredProcedureBase)procedure).SetSchemaName(name);
+            Maybe<string> overriddenProcedureSchemaResult =
+                GetOverriddenStoredProcedureSchemaName(storedProcedurePropertyInfo)
+                .Or(GetOverriddenStoredProcedureSchemaName(storedProcedurePropertyInfo.PropertyType));
+
+            if (overriddenProcedureSchemaResult.HasItem)
+            {
+                name = overriddenProcedureSchemaResult.Single();
+            }
+            else if (_storedProcedureExecutor.HasDefaultSchemaName)
+            {
+                name = _storedProcedureExecutor.DefaultSchemaName;
+            }
+
+            ((StoredProcedure)procedure).SetSchemaName(name);
         }
 
     }
