@@ -1,2 +1,2 @@
 # StoredProcedureFrameworkCore
-This project will hold an update of my original StoredProcedureFramework which is designed specifically for .Net core framework
+This project will hold an updated version of my original StoredProcedureFramework which has been specifically re-written from tehground up, for .Net core framework
