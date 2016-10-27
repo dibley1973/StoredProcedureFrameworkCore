@@ -64,9 +64,27 @@ namespace Dibware.StoredProcedureFrameworkCore
             _storedProcedureExecutor = storedProcedureExecutor;
         }
 
+        
         public TResultSetType Execute()
         {
-            return _storedProcedureExecutor.ExecuteStoredProcedure<TResultSetType>(this);
+            return _storedProcedureExecutor.ExecuteStoredProcedure(this);
+        }
+    }
+
+    public class StoredProcedure<TResultSetType, TParameterType>
+    {
+        private readonly IStoredProcedureExecutor _storedProcedureExecutor;
+
+        public StoredProcedure(IStoredProcedureExecutor storedProcedureExecutor)
+        {
+            if (storedProcedureExecutor == null) throw new ArgumentNullException(nameof(storedProcedureExecutor));
+
+            _storedProcedureExecutor = storedProcedureExecutor;
+        }
+
+        public TResultSetType ExecuteFor(TParameterType parameters)
+        {
+            return _storedProcedureExecutor.ExecuteStoredProcedureFor(this, parameters);
         }
     }
 }

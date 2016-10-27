@@ -5,7 +5,6 @@ using Dibware.StoredProcedureFrameworkCore.Extensions;
 using Dibware.StoredProcedureFrameworkCore.Generics;
 using Dibware.StoredProcedureFrameworkCore.Helpers.AttributeHelpers;
 using System.Linq;
-using Dibware.StoredProcedureFrameworkCore.StoredProcedureAttributes;
 
 namespace Dibware.StoredProcedureFrameworkCore
 {
@@ -68,25 +67,11 @@ namespace Dibware.StoredProcedureFrameworkCore
             return storedProcedureProperties;
         }
 
-        //static bool IsSubclassOfRawGeneric(Type generic, Type toCheck)
-        //{
-        //    while (toCheck != null && toCheck != typeof(object))
-        //    {
-        //        var cur = toCheck.IsGenericType ? toCheck.GetGenericTypeDefinition() : toCheck;
-        //        if (generic == cur)
-        //        {
-        //            return true;
-        //        }
-        //        toCheck = toCheck.BaseType;
-        //    }
-        //    return false;
-        //}
-
         private static string GetStoredProcedureName(PropertyInfo storedProcedurePropertyInfo)
         {
             var overriddenProcedureNameResult =
-                GetOverriddenStoredProcedureName(storedProcedurePropertyInfo)
-                    .Or(GetOverriddenStoredProcedureName(storedProcedurePropertyInfo.PropertyType));
+                GetOverriddenStoredProcedureName(storedProcedurePropertyInfo).Or(
+                    GetOverriddenStoredProcedureName(storedProcedurePropertyInfo.PropertyType));
 
             var defaultProcedureName = storedProcedurePropertyInfo.Name;
             var procedureName = overriddenProcedureNameResult.SingleOrDefault(defaultProcedureName);

@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Reflection;
 using System.Linq;
 using Dibware.StoredProcedureFrameworkCore.Generics;
 using Dibware.StoredProcedureFrameworkCore.Helpers.AttributeHelpers;
@@ -7,10 +6,10 @@ using Dibware.StoredProcedureFrameworkCore.StoredProcedureAttributes;
 using FluentAssertions;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-namespace Dibware.StoredProcedureFrameworkCore.Tests.Tests
+namespace Dibware.StoredProcedureFrameworkCore.Tests.Tests.Helpers.AttributeHelpers
 {
     [TestClass]
-    public class PropertyNameAttributeFinderTests
+    public class TypeSchemaAttributeFinderTests
     {
         #region Constructor
 
@@ -21,7 +20,7 @@ namespace Dibware.StoredProcedureFrameworkCore.Tests.Tests
 
             // ACT
             // ReSharper disable once ObjectCreationAsStatement
-            Action actual = () => new PropertyNameAttributeFinder(null);
+            Action actual = () => new TypeSchemaAttributeFinder(null);
 
             // ASSERT
             actual.ShouldThrow<ArgumentNullException>();
@@ -31,12 +30,11 @@ namespace Dibware.StoredProcedureFrameworkCore.Tests.Tests
         public void Constructor_WhenGivenValidValue_DoesNotThrowException()
         {
             // ARRANGE
-            Type testType = typeof(TestObject);
-            PropertyInfo property = testType.GetProperty("Name1");
+            Type testType = typeof(TypeSchemaAttributeFinderTests.TestObject1);
 
             // ACT
             // ReSharper disable once ObjectCreationAsStatement
-            Action actual = () => new PropertyNameAttributeFinder(property);
+            Action actual = () => new TypeSchemaAttributeFinder(testType);
 
             // ASSERT
             actual.ShouldNotThrow<ArgumentNullException>();
@@ -50,11 +48,10 @@ namespace Dibware.StoredProcedureFrameworkCore.Tests.Tests
         public void HasAttribute_WhenCalledAfterInstantiationAndPropertyDoesNotHaveAtrribute_ReturnsFalse()
         {
             // ARRANGE
-            Type testType = typeof(TestObject);
-            PropertyInfo property = testType.GetProperty("Name1");
+            Type testType = typeof(TestObject1);
 
             // ACT
-            var actual = new PropertyNameAttributeFinder(property).HasFoundAttribute;
+            bool actual = new TypeSchemaAttributeFinder(testType).HasFoundAttribute;
 
             // ASSERT
             actual.Should().BeFalse();
@@ -64,11 +61,10 @@ namespace Dibware.StoredProcedureFrameworkCore.Tests.Tests
         public void HasAttribute_WhenCalledAfterInstantiationAndPropertyDoesHaveAtrribute_ReturnsTrue()
         {
             // ARRANGE
-            Type testType = typeof(TestObject);
-            PropertyInfo property = testType.GetProperty("Name2");
+            Type testType = typeof(TestObject2);
 
             // ACT
-            bool actual = new PropertyNameAttributeFinder(property).HasFoundAttribute;
+            bool actual = new TypeSchemaAttributeFinder(testType).HasFoundAttribute;
 
             // ASSERT
             actual.Should().BeTrue();
@@ -82,12 +78,11 @@ namespace Dibware.StoredProcedureFrameworkCore.Tests.Tests
         public void GetResult_WhenCalledAfterInstantiationAndPropertyDoesNotHaveAtrribute_ReturnsEmptyMaybe()
         {
             // ARRANGE
-            Type testType = typeof(TestObject);
-            PropertyInfo property = testType.GetProperty("Name1");
+            Type testType = typeof(TestObject1);
 
             // ACT
-            Maybe<NameAttribute> maybeActual = new PropertyNameAttributeFinder(property).GetResult();
-            
+            Maybe<SchemaAttribute> maybeActual = new TypeSchemaAttributeFinder(testType).GetResult();
+
             // ASSERT
             var actual = maybeActual.FirstOrDefault();
             actual.Should().BeNull();
@@ -97,30 +92,30 @@ namespace Dibware.StoredProcedureFrameworkCore.Tests.Tests
         public void GetResult_WhenCalledAfterInstantiationAndPropertyDoesHaveAtrribute_ReturnsMaybePopulatedWithInstanceOfAttribute()
         {
             // ARRANGE
-            Type testType = typeof(TestObject);
-            PropertyInfo property = testType.GetProperty("Name2");
+            Type testType = typeof(TestObject2);
 
             // ACT
-            Maybe<NameAttribute> maybeActual = new PropertyNameAttributeFinder(property).GetResult();
-            
+            Maybe<SchemaAttribute> maybeActual = new TypeSchemaAttributeFinder(testType).GetResult();
+
+
             // ASSERT
             var actual = maybeActual.FirstOrDefault();
             actual.Should().NotBeNull();
-            actual.Should().BeOfType<NameAttribute>();
+            actual.Should().BeOfType<SchemaAttribute>();
+            actual.Value.Should().Be("log");
         }
 
         #endregion
 
         #region Mock object
 
-        private class TestObject
+        private class TestObject1
         {
-            // ReSharper disable once UnusedMember.Local
-            public string Name1 { get; set; }
+        }
 
-            [Name("Address")]
-            // ReSharper disable once UnusedMember.Local
-            public string Name2 { get; set; }
+        [Schema("log")]
+        private class TestObject2
+        {
         }
 
         #endregion

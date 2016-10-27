@@ -10,5 +10,11 @@
         {
             throw new System.NotImplementedException();
         }
+
+        public TResultSetType ExecuteStoredProcedureFor<TResultSetType, TParameterType>(StoredProcedure<TResultSetType, TParameterType> storedProcedure,
+            TParameterType parameters)
+        {
+            throw new System.NotImplementedException();
+        }
     }
 }

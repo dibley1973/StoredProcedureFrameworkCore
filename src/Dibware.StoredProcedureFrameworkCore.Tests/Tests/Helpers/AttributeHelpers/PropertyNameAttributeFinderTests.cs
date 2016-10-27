@@ -1,13 +1,13 @@
 ﻿using System;
-using System.Linq;
 using System.Reflection;
+using System.Linq;
 using Dibware.StoredProcedureFrameworkCore.Generics;
 using Dibware.StoredProcedureFrameworkCore.Helpers.AttributeHelpers;
 using Dibware.StoredProcedureFrameworkCore.StoredProcedureAttributes;
 using FluentAssertions;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-namespace Dibware.StoredProcedureFrameworkCore.Tests.Tests.Helpers.AttributeHelpers
+namespace Dibware.StoredProcedureFrameworkCore.Tests.Tests
 {
     [TestClass]
     public class PropertyNameAttributeFinderTests
@@ -15,17 +15,16 @@ namespace Dibware.StoredProcedureFrameworkCore.Tests.Tests.Helpers.AttributeHelp
         #region Constructor
 
         [TestMethod]
-        //[ExpectedException(typeof(ArgumentNullException))]
         public void Constructor_WhenConstructedWithNullProperty_ThrowsException()
         {
             // ARRANGE
 
             // ACT
             // ReSharper disable once ObjectCreationAsStatement
-            Action action = () => new PropertyNameAttributeFinder(null);
+            Action actual = () => new PropertyNameAttributeFinder(null);
 
             // ASSERT
-            action.ShouldThrow<ArgumentNullException>();
+            actual.ShouldThrow<ArgumentNullException>();
         }
 
         [TestMethod]
@@ -37,10 +36,10 @@ namespace Dibware.StoredProcedureFrameworkCore.Tests.Tests.Helpers.AttributeHelp
 
             // ACT
             // ReSharper disable once ObjectCreationAsStatement
-            Action action = () => new PropertyNameAttributeFinder(property);
+            Action actual = () => new PropertyNameAttributeFinder(property);
 
             // ASSERT
-            action.ShouldNotThrow<Exception>();
+            actual.ShouldNotThrow<ArgumentNullException>();
         }
 
         #endregion
@@ -55,11 +54,10 @@ namespace Dibware.StoredProcedureFrameworkCore.Tests.Tests.Helpers.AttributeHelp
             PropertyInfo property = testType.GetProperty("Name1");
 
             // ACT
-            bool actual = new PropertyNameAttributeFinder(property)
-                .HasFoundAttribute;
+            var actual = new PropertyNameAttributeFinder(property).HasFoundAttribute;
 
             // ASSERT
-            Assert.IsFalse(actual);
+            actual.Should().BeFalse();
         }
 
         [TestMethod]
@@ -88,10 +86,11 @@ namespace Dibware.StoredProcedureFrameworkCore.Tests.Tests.Helpers.AttributeHelp
             PropertyInfo property = testType.GetProperty("Name1");
 
             // ACT
-            Maybe<NameAttribute> actual = new PropertyNameAttributeFinder(property).GetResult();
-
+            Maybe<NameAttribute> maybeActual = new PropertyNameAttributeFinder(property).GetResult();
+            
             // ASSERT
-            Assert.IsNull(actual.FirstOrDefault());
+            var actual = maybeActual.FirstOrDefault();
+            actual.Should().BeNull();
         }
 
         [TestMethod]
@@ -102,25 +101,25 @@ namespace Dibware.StoredProcedureFrameworkCore.Tests.Tests.Helpers.AttributeHelp
             PropertyInfo property = testType.GetProperty("Name2");
 
             // ACT
-            Maybe<NameAttribute> actual = new PropertyNameAttributeFinder(property).GetResult();
-
+            Maybe<NameAttribute> maybeActual = new PropertyNameAttributeFinder(property).GetResult();
+            
             // ASSERT
-            Assert.IsNotNull(actual);
-            Assert.IsInstanceOfType(actual.FirstOrDefault(), typeof(NameAttribute));
-            Assert.IsTrue(actual.HasItem);
+            var actual = maybeActual.FirstOrDefault();
+            actual.Should().NotBeNull();
+            actual.Should().BeOfType<NameAttribute>();
         }
 
         #endregion
 
-        #region Fake Object
+        #region Mock object
 
         private class TestObject
         {
             // ReSharper disable once UnusedMember.Local
             public string Name1 { get; set; }
 
-            // ReSharper disable once UnusedMember.Local
             [Name("Address")]
+            // ReSharper disable once UnusedMember.Local
             public string Name2 { get; set; }
         }
 
