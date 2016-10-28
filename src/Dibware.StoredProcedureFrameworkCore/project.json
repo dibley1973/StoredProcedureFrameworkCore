@@ -1,5 +1,7 @@
 {
-  "version": "1.0.0-*",
+  "title": "Stored Procedure Framework for .Net Core",
+  "description": "The .net core version of the original Stored Procedure Framework",
+  "version": "0.1.0-*",
 
   "dependencies": {
     "NETStandard.Library": "1.6.0",

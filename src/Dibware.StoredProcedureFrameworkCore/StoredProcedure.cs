@@ -1,4 +1,5 @@
 ﻿using System;
+using Dibware.StoredProcedureFrameworkCore.Helpers;
 
 namespace Dibware.StoredProcedureFrameworkCore
 {
@@ -19,6 +20,11 @@ namespace Dibware.StoredProcedureFrameworkCore
         /// The name of the schema.
         /// </value>
         public string SchemaName { get; private set;  }
+
+        protected bool HasProcedureName()
+        {
+            return !string.IsNullOrEmpty(ProcedureName);
+        }
 
         /// <summary>
         /// Sets the procedure name.
@@ -71,7 +77,7 @@ namespace Dibware.StoredProcedureFrameworkCore
         }
     }
 
-    public class StoredProcedure<TResultSetType, TParameterType>
+    public class StoredProcedure<TResultSetType, TParameterType> : StoredProcedure
     {
         private readonly IStoredProcedureExecutor _storedProcedureExecutor;
 
@@ -85,6 +91,23 @@ namespace Dibware.StoredProcedureFrameworkCore
         public TResultSetType ExecuteFor(TParameterType parameters)
         {
             return _storedProcedureExecutor.ExecuteStoredProcedureFor(this, parameters);
+        }
+
+        public string GetTwoPartName()
+        {
+            EnsureProcedureHasName();
+
+            return string.Format("{0}.{1}", SchemaName, ProcedureName);
+        }
+
+        private void EnsureProcedureHasName()
+        {
+            if (HasProcedureName()) return;
+
+            string message = "Stored procedure does not have a name set. Consider using " + 
+                nameof(SetProcedureName) + 
+                " before calling this method.";
+            throw ExceptionHelper.CreateStoredProcedureConstructionException(message);
         }
     }
 }
