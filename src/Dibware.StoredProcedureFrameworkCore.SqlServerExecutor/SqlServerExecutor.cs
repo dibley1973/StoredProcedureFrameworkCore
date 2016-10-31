@@ -3,14 +3,14 @@ using System.Data.SqlClient;
 
 namespace Dibware.StoredProcedureFrameworkCore.SqlServerExecutor
 {
-    public class SqlServerStoredProcedureExecutor : IStoredProcedureExecutor
+    public class SqlServerExecutor : IStoredProcedureExecutor
     {
         //private readonly Type _resultSetType;
         private  SqlConnection _connection;
         private readonly bool _ownsConnection = false;
        
 
-        public SqlServerStoredProcedureExecutor(string nameOrConnectionString)
+        public SqlServerExecutor(string nameOrConnectionString)
         {
             if (string.IsNullOrWhiteSpace(nameOrConnectionString)) throw new ArgumentNullException(nameof(nameOrConnectionString));
 
@@ -19,7 +19,7 @@ namespace Dibware.StoredProcedureFrameworkCore.SqlServerExecutor
 
         }
 
-        public SqlServerStoredProcedureExecutor(SqlConnection connection)
+        public SqlServerExecutor(SqlConnection connection)
         {
             if (connection == null) throw new ArgumentNullException(nameof(connection));
 
@@ -30,7 +30,7 @@ namespace Dibware.StoredProcedureFrameworkCore.SqlServerExecutor
         #region Dispose and Finalise
 
         /// <summary>
-        /// Gets a value indicating whether this <see cref="SqlServerStoredProcedureExecutor"/> 
+        /// Gets a value indicating whether this <see cref="SqlServerExecutor"/> 
         /// is disposed.
         /// </summary>
         /// <value>
@@ -39,9 +39,9 @@ namespace Dibware.StoredProcedureFrameworkCore.SqlServerExecutor
         private bool Disposed { get; set; }
 
         /// <summary>
-        /// Finalizes an instance of the <see cref="SqlServerStoredProcedureExecutor"/> class.
+        /// Finalizes an instance of the <see cref="SqlServerExecutor"/> class.
         /// </summary>
-        ~SqlServerStoredProcedureExecutor()
+        ~SqlServerExecutor()
         {
             Dispose(false);
         }
@@ -196,10 +196,8 @@ namespace Dibware.StoredProcedureFrameworkCore.SqlServerExecutor
             if (storedProcedure == null) throw new ArgumentNullException(nameof(storedProcedure));
             if (Disposed) throw new ObjectDisposedException("Cannot call Execute when this object is disposed");
 
-
-            string procedureFullName = storedProcedure.GetTwoPartName();
-            
-            throw new NotImplementedException();
+            var storedProcedureExecuter = new SqlServerExecutor(_connection);
+            return storedProcedureExecuter.ExecuteStoredProcedureFor(storedProcedure, parameters);
         }
     }
 }

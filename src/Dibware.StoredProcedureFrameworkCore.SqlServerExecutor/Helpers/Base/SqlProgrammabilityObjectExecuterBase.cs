@@ -3,10 +3,12 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Data;
 using System.Data.SqlClient;
+using System.Linq;
 using System.Reflection;
 using Dibware.StoredProcedureFrameworkCore.SqlServerExecutor.Contracts;
 using Dibware.StoredProcedureFrameworkCore.Types;
 using Dibware.StoredProcedureFrameworkCore.Extensions;
+using Dibware.StoredProcedureFrameworkCore.SqlServerExecutor.Constants;
 
 namespace Dibware.StoredProcedureFrameworkCore.SqlServerExecutor.Helpers.Base
 {
@@ -39,9 +41,9 @@ namespace Dibware.StoredProcedureFrameworkCore.SqlServerExecutor.Helpers.Base
         protected SqlProgrammabilityObjectExecuterBase(IDbConnection connection,
             string programmabilityObjectName)
         {
-            if (connection == null) throw new ArgumentNullException("connection");
+            if (connection == null) throw new ArgumentNullException(nameof(connection));
             if (string.IsNullOrWhiteSpace(programmabilityObjectName))
-                throw new ArgumentNullException("programmabilityObjectName");
+                throw new ArgumentNullException(nameof(programmabilityObjectName));
 
             _connection = connection;
             _programmabilityObjectName = programmabilityObjectName;
@@ -88,16 +90,16 @@ namespace Dibware.StoredProcedureFrameworkCore.SqlServerExecutor.Helpers.Base
         /// </param>
         private void Dispose(bool disposing)
         {
-            if (!Disposed)
-            {
-                if (disposing)
-                {
-                    DisposeCommand();
-                }
+            if (Disposed) return;
 
-                // There are no unmanaged resources to release, but
-                // if we add them, they need to be released here.
+            if (disposing)
+            {
+                DisposeCommand();
             }
+
+            // There are no unmanaged resources to release, but
+            // if we add them, they need to be released here.
+
             Disposed = true;
         }
 
@@ -163,7 +165,7 @@ namespace Dibware.StoredProcedureFrameworkCore.SqlServerExecutor.Helpers.Base
 
         protected void WithParameters(IEnumerable<SqlParameter> procedureParameters)
         {
-            if (procedureParameters == null) throw new ArgumentNullException("procedureParameters");
+            if (procedureParameters == null) throw new ArgumentNullException(nameof(procedureParameters));
 
             _procedureParameters = procedureParameters;
         }
@@ -184,16 +186,13 @@ namespace Dibware.StoredProcedureFrameworkCore.SqlServerExecutor.Helpers.Base
 
         private void AddMoreInformativeInformationToExecuteError(ref Exception ex)
         {
-            //var detailedMessage = string.Format(
-            //    ExceptionMessages.ErrorReadingStoredProcedure,
-            //    _programmabilityObjectName,
-            //    ex.Message);
-            //Type exceptionType = ex.GetType();
-            //var fieldInfo = exceptionType.GetField("_message", BindingFlags.Instance | BindingFlags.NonPublic);
+            var detailedMessage = string.Format(ExceptionMessages.ErrorReadingStoredProcedure,
+                _programmabilityObjectName, ex.Message);
+            var exceptionType = ex.GetType();
+            var fieldInfo = exceptionType.GetField("_message", BindingFlags.Instance | BindingFlags.NonPublic);
 
-            //if (fieldInfo != null) fieldInfo.SetValue(ex, detailedMessage);
-
-            throw new NotImplementedException();
+            var hasFieldInfo = fieldInfo != null;
+            if (hasFieldInfo) fieldInfo.SetValue(ex, detailedMessage);
         }
 
         private void CacheOriginalConnectionState()
@@ -207,51 +206,39 @@ namespace Dibware.StoredProcedureFrameworkCore.SqlServerExecutor.Helpers.Base
         {
             DisposeCommand();
 
-            IDbCommandCreator creator = CreateCommandCreator();
+            var commandCreator = CreateCommandCreator();
 
-            bool hasCommandTimeoutOverride = _commandTimeoutOverride.HasValue;
-            if (hasCommandTimeoutOverride)
-            {
-                creator.WithCommandTimeout(_commandTimeoutOverride.Value);
-            }
+            var hasCommandTimeoutOverride = _commandTimeoutOverride.HasValue;
+            if (hasCommandTimeoutOverride) commandCreator.WithCommandTimeout(_commandTimeoutOverride.Value);
+            
+            if (HasParameters) commandCreator.WithParameters(_procedureParameters);
 
-            if (HasParameters)
-            {
-                creator.WithParameters(_procedureParameters);
-            }
+            if (HasTransaction) commandCreator.WithTransaction(_transaction);
 
-            if (HasTransaction)
-            {
-                creator.WithTransaction(_transaction);
-            }
-
-            Command = creator
+            Command = commandCreator
                 .BuildCommand()
                 .Command;
         }
 
         private void DisposeCommand()
         {
-            if (Command != null)
-            {
-                Command.Dispose();
-                Command = null;
-            }
+            if (Command == null) return;
+
+            Command.Dispose();
+            Command = null;
         }
 
         private void EnsureRecorsetListIsInstantiated(
             IList dtoList,
             string listPropertyName)
         {
-            //if (dtoList != null) return;
+            var dtoListIsInstantiated = dtoList != null;
+            if (dtoListIsInstantiated) return;
 
-            //string errorMessage = string.Format(
-            //    ExceptionMessages.RecordSetListNotInstatiated,
-            //    _resultSetType.Name,
-            //    listPropertyName);
-            //throw new NullReferenceException(errorMessage);
+            string errorMessage = string.Format(ExceptionMessages.RecordSetListNotInstatiated,
+                _resultSetType.Name, listPropertyName);
 
-            throw new NotImplementedException();
+            throw new NullReferenceException(errorMessage);
         }
 
         protected abstract void ExecuteCommand();
@@ -275,26 +262,24 @@ namespace Dibware.StoredProcedureFrameworkCore.SqlServerExecutor.Helpers.Base
 
         private void ExecuteCommandForMultipleRecordSets()
         {
-            //Results = new TResultSetType();
-            //var recordSetIndex = 0;
-            //var resultSetTypeProperties = _resultSetType.GetMappedProperties();
+            Results = new TResultSetType();
+            var recordSetIndex = 0;
+            var resultSetTypeProperties = _resultSetType.GetMappedProperties();
 
-            //using (IDataReader reader = Command.ExecuteReader(_commandBehavior))
-            //{
-            //    bool readerContainsAnotherResult;
-            //    do
-            //    {
-            //        var recordSetDtoList = GetRecordSetDtoList(resultSetTypeProperties, recordSetIndex);
-            //        ReadRecordSetFromReader(reader, recordSetDtoList);
+            using (IDataReader reader = Command.ExecuteReader(_commandBehavior))
+            {
+                bool readerContainsAnotherResult;
+                do
+                {
+                    var recordSetDtoList = GetRecordSetDtoList(resultSetTypeProperties, recordSetIndex);
+                    ReadRecordSetFromReader(reader, recordSetDtoList);
 
-            //        recordSetIndex += 1;
-            //        readerContainsAnotherResult = reader.NextResult();
+                    recordSetIndex += 1;
+                    readerContainsAnotherResult = reader.NextResult();
 
-            //    } while (readerContainsAnotherResult);
-            //    reader.Close();
-            //}
-
-            throw new NotImplementedException();
+                } while (readerContainsAnotherResult);
+                reader.Close();
+            }
         }
 
         private void ExecuteCommandForSingleRecordSet()
@@ -353,15 +338,17 @@ namespace Dibware.StoredProcedureFrameworkCore.SqlServerExecutor.Helpers.Base
 
         private void ReadRecordSetFromReader(IDataReader reader, IList records)
         {
-            //Type recordType = records.GetType().GetGenericArguments()[0];
-            //var mapper = new DateReaderRecordToObjectMapper(reader, recordType);
-            //while (reader.Read())
-            //{
-            //    mapper.PopulateMappedTargetFromReaderRecord();
-            //    records.Add(mapper.MappedTarget);
-            //}
+            var genericArguments = records.GetType().GetTypeInfo().GetGenericArguments();
+            var doesNotHaveGenericArguments = !genericArguments.Any();
+            if (doesNotHaveGenericArguments) throw new InvalidOperationException("Type " + records.GetType().Name + " does not have generic arguments. ");
 
-            throw new NotImplementedException();
+            var recordType = genericArguments.First();
+            var mapper = new DateReaderRecordToObjectMapper(reader, recordType);
+            while (reader.Read())
+            {
+                mapper.PopulateMappedTargetFromReaderRecord();
+                records.Add(mapper.MappedTarget);
+            }
         }
 
         private void RestoreOriginalConnectionState()
