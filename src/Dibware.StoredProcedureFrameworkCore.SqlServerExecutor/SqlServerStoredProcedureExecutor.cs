@@ -1,14 +1,14 @@
 ﻿using System;
 using System.Data;
 using System.Data.SqlClient;
-using Dibware.StoredProcedureFrameworkCore.Types;
 
 namespace Dibware.StoredProcedureFrameworkCore.SqlServerExecutor
 {
     public class SqlServerStoredProcedureExecutor : IStoredProcedureExecutor
     {
-        private readonly SqlConnection _sqlConnection;
-        private readonly bool _ownsConnection = false;
+        private bool _disposed;
+        private SqlConnection _sqlConnection;
+        private readonly bool _ownsConnection;
 
         public SqlServerStoredProcedureExecutor(string nameOrConnectionString)
         {
@@ -46,6 +46,45 @@ namespace Dibware.StoredProcedureFrameworkCore.SqlServerExecutor
             string procedureFullName = storedProcedure.GetTwoPartName();
 
             throw new NotImplementedException();
+        }
+
+        ~SqlServerStoredProcedureExecutor()
+        {
+            Dispose(false);
+        }
+
+        public void Dispose()
+        {
+            Dispose(true);
+        }
+
+        private void Dispose(bool disposing)
+        {
+            if (_disposed) return;
+
+            if (disposing)
+            {
+                // Free other state (managed objects).
+            }
+            // Free your own state (unmanaged objects).
+            // Set large fields to null.
+
+            CloseConnectionIfOwned();
+
+            _disposed = true;
+        }
+
+        private void CloseConnectionIfOwned()
+        {
+            if (!_ownsConnection) return;
+
+            if (_sqlConnection != null)
+            {
+                if (_sqlConnection.State != ConnectionState.Closed) _sqlConnection.Close();
+
+                _sqlConnection.Dispose();
+                _sqlConnection = null;
+            }
         }
     }
 }

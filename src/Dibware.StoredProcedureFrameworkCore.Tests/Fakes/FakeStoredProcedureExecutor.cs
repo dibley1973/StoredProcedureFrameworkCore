@@ -16,5 +16,7 @@
         {
             throw new System.NotImplementedException();
         }
+
+        public void Dispose() { /* No-Op */ }
     }
 }

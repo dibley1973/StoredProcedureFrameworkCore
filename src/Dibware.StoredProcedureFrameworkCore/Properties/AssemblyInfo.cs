@@ -17,3 +17,4 @@ using System.Runtime.InteropServices;
 
 // The following GUID is for the ID of the typelib if this project is exposed to COM
 [assembly: Guid("a732ac88-de96-4986-87ee-fb97265241b4")]
+[assembly: InternalsVisibleTo("Dibware.StoredProcedureFrameworkCore.Tests")]

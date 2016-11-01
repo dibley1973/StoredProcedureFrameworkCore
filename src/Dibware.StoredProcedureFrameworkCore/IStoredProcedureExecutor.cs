@@ -1,6 +1,8 @@
-﻿namespace Dibware.StoredProcedureFrameworkCore
+﻿using System;
+
+namespace Dibware.StoredProcedureFrameworkCore
 {
-    public interface IStoredProcedureExecutor
+    public interface IStoredProcedureExecutor : IDisposable
     {
         string DefaultSchemaName { get; }
         bool HasDefaultSchemaName { get; }
