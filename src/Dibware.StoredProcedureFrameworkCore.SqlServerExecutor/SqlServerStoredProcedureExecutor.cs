@@ -68,23 +68,24 @@ namespace Dibware.StoredProcedureFrameworkCore.SqlServerExecutor
             }
             // Free your own state (unmanaged objects).
             // Set large fields to null.
-
-            CloseConnectionIfOwned();
+            CleanUpConnectionIfOwned();
 
             _disposed = true;
         }
 
-        private void CloseConnectionIfOwned()
+        private void CleanUpConnectionIfOwned()
         {
-            if (!_ownsConnection) return;
+            var connectionIsNotOwned = !_ownsConnection;
+            if (connectionIsNotOwned) return;
 
-            if (_sqlConnection != null)
-            {
-                if (_sqlConnection.State != ConnectionState.Closed) _sqlConnection.Close();
+            var connectionDoesNotNeedDisposing = _sqlConnection == null;
+            if (connectionDoesNotNeedDisposing) return;
 
-                _sqlConnection.Dispose();
-                _sqlConnection = null;
-            }
+            var connectionStateIsNotclosed = _sqlConnection.State != ConnectionState.Closed;
+            if (connectionStateIsNotclosed) _sqlConnection.Close();
+
+            _sqlConnection.Dispose();
+            _sqlConnection = null;
         }
     }
 }
