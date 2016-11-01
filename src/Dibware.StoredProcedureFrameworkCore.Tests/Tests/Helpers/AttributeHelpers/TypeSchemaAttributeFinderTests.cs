@@ -30,7 +30,7 @@ namespace Dibware.StoredProcedureFrameworkCore.Tests.Tests.Helpers.AttributeHelp
         public void Constructor_WhenGivenValidValue_DoesNotThrowException()
         {
             // ARRANGE
-            Type testType = typeof(TypeSchemaAttributeFinderTests.TestObject1);
+            Type testType = typeof(TestObject1);
 
             // ACT
             // ReSharper disable once ObjectCreationAsStatement

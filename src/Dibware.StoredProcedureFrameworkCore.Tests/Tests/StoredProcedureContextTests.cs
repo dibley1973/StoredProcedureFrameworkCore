@@ -7,11 +7,11 @@ namespace Dibware.StoredProcedureFrameworkCore.Tests.Tests
     [TestClass]
     public class StoredProcedureContextTests
     {
-        static readonly IStoredProcedureExecutor _executor;
+        private static readonly IStoredProcedureExecutor Executor;
 
         static StoredProcedureContextTests()
         {
-            _executor = new FakeStoredProcedureExecutor();
+            Executor = new FakeStoredProcedureExecutor();
         }
 
         [TestInitialize]
@@ -23,7 +23,7 @@ namespace Dibware.StoredProcedureFrameworkCore.Tests.Tests
         public void ProcedureProperty_AfterInstantiation_IsNotNull()
         {
             // ARRANGE
-            var context = new FakeStoredProcedureContext(_executor);
+            var context = new FakeStoredProcedureContext(Executor);
 
             // ACT
             var actual = context.Procedure1;
@@ -36,7 +36,7 @@ namespace Dibware.StoredProcedureFrameworkCore.Tests.Tests
         public void ProcedurePropertyWithoutNameAttribute_AfterInstantiation_HasCorrectName()
         {
             // ARRANGE
-            var context = new FakeStoredProcedureContext(_executor);
+            var context = new FakeStoredProcedureContext(Executor);
 
             // ACT
             var actual = context.Procedure1;
@@ -49,7 +49,7 @@ namespace Dibware.StoredProcedureFrameworkCore.Tests.Tests
         public void ProcedurePropertyWithNameAttribute_AfterInstantiation_HasCorrectName()
         {
             // ARRANGE
-            var context = new FakeStoredProcedureContext(_executor);
+            var context = new FakeStoredProcedureContext(Executor);
 
             // ACT
             var actual = context.Procedure2;
@@ -62,7 +62,7 @@ namespace Dibware.StoredProcedureFrameworkCore.Tests.Tests
         public void ProcedurePropertyWithoutSchemaAttribute_AfterInstantiation_HasDefaultSchema()
         {
             // ARRANGE
-            var context = new FakeStoredProcedureContext(_executor);
+            var context = new FakeStoredProcedureContext(Executor);
 
             // ACT
             var actual = context.Procedure1;
@@ -75,7 +75,7 @@ namespace Dibware.StoredProcedureFrameworkCore.Tests.Tests
         public void ProcedurePropertyWithSchemaAttribute_AfterInstantiation_HasCorrectSchema()
         {
             // ARRANGE
-            var context = new FakeStoredProcedureContext(_executor);
+            var context = new FakeStoredProcedureContext(Executor);
 
             // ACT
             var actual = context.Procedure3;
