@@ -1,29 +1,27 @@
 ﻿using System;
+using System.Data;
 using System.Data.SqlClient;
 
 namespace Dibware.StoredProcedureFrameworkCore.SqlServerExecutor
 {
     public class SqlServerExecutor : IStoredProcedureExecutor
     {
-        //private readonly Type _resultSetType;
-        private  SqlConnection _connection;
-        private readonly bool _ownsConnection = false;
-       
+        private  SqlConnection _sqlConnection;
+        private readonly bool _ownsConnection;
 
         public SqlServerExecutor(string nameOrConnectionString)
         {
             if (string.IsNullOrWhiteSpace(nameOrConnectionString)) throw new ArgumentNullException(nameof(nameOrConnectionString));
 
-            _connection = new SqlConnection(nameOrConnectionString);
+            _sqlConnection = new SqlConnection(nameOrConnectionString);
             _ownsConnection = true;
-
         }
 
-        public SqlServerExecutor(SqlConnection connection)
+        public SqlServerExecutor(SqlConnection sqlConnection)
         {
-            if (connection == null) throw new ArgumentNullException(nameof(connection));
+            if (sqlConnection == null) throw new ArgumentNullException(nameof(sqlConnection));
 
-            _connection = connection;
+            _sqlConnection = sqlConnection;
             _ownsConnection = false;
         }
 
@@ -80,11 +78,17 @@ namespace Dibware.StoredProcedureFrameworkCore.SqlServerExecutor
 
         private void DisposeConnection()
         {
-            if (_ownsConnection && _connection != null)
-            {
-                _connection.Dispose();
-                _connection = null;
-            }
+            var connectionIsNotOwned = !_ownsConnection;
+            if (connectionIsNotOwned) return;
+
+            var connectionDoesNotNeedDisposing = _sqlConnection == null;
+            if (connectionDoesNotNeedDisposing) return;
+
+            var connectionStateIsNotclosed = _sqlConnection.State != ConnectionState.Closed;
+            if (connectionStateIsNotclosed) _sqlConnection.Close();
+
+            _sqlConnection.Dispose();
+            _sqlConnection = null;
         }
 
         #endregion
@@ -131,7 +135,7 @@ namespace Dibware.StoredProcedureFrameworkCore.SqlServerExecutor
 
         //private void CacheOriginalConnectionState()
         //{
-        //    _connectionAlreadyOpen = (_connection.State == ConnectionState.Open);
+        //    _connectionAlreadyOpen = (_sqlConnection.State == ConnectionState.Open);
         //}
 
 
@@ -186,8 +190,11 @@ namespace Dibware.StoredProcedureFrameworkCore.SqlServerExecutor
 
         public TResultSetType ExecuteStoredProcedure<TResultSetType>(StoredProcedure<TResultSetType> storedProcedure)
         {
-            //return ExecuteStoredProcedureFor<TResultSetType, NullStoredProcedureParameters>(storedProcedure);
-            throw new NotImplementedException();
+            if (storedProcedure == null) throw new ArgumentNullException(nameof(storedProcedure));
+            if (Disposed) throw new ObjectDisposedException("Cannot call Execute when this object is disposed");
+
+            var storedProcedureExecuter = new SqlServerStoredProcedureExecutor(_sqlConnection);
+            return storedProcedureExecuter.ExecuteStoredProcedure(storedProcedure);
         }
 
         public TResultSetType ExecuteStoredProcedureFor<TResultSetType, TParameterType>(StoredProcedure<TResultSetType, TParameterType> storedProcedure,
@@ -196,7 +203,7 @@ namespace Dibware.StoredProcedureFrameworkCore.SqlServerExecutor
             if (storedProcedure == null) throw new ArgumentNullException(nameof(storedProcedure));
             if (Disposed) throw new ObjectDisposedException("Cannot call Execute when this object is disposed");
 
-            var storedProcedureExecuter = new SqlServerExecutor(_connection);
+            var storedProcedureExecuter = new SqlServerStoredProcedureExecutor(_sqlConnection);
             return storedProcedureExecuter.ExecuteStoredProcedureFor(storedProcedure, parameters);
         }
     }

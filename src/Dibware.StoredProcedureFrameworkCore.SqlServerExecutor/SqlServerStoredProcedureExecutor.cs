@@ -34,6 +34,8 @@ namespace Dibware.StoredProcedureFrameworkCore.SqlServerExecutor
 
         public TResultSetType ExecuteStoredProcedure<TResultSetType>(StoredProcedure<TResultSetType> storedProcedure)
         {
+            if (storedProcedure == null) throw new ArgumentNullException(nameof(storedProcedure));
+
             //return ExecuteStoredProcedureFor<TResultSetType, NullStoredProcedureParameters>(storedProcedure);
             throw new NotImplementedException();
         }
