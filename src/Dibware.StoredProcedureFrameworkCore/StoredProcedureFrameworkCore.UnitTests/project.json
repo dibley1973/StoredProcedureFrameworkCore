@@ -1,10 +1,10 @@
-﻿{
+{
+  "title": "StoredProcedureFrameworkCore.Tests",
   "version": "0.1.0-*",
 
   "testRunner": "mstest",
 
   "dependencies": {
-    "Dibware.StoredProcedureFrameworkCore": "0.1.0-*",
     "dotnet-test-mstest": "1.1.1-preview",
     "FluentAssertions": "4.14.0",
     "moq": "4.6.38-alpha",
@@ -13,8 +13,7 @@
       "version": "1.0.1",
       "type": "platform"
     },
-    "System.Data.SqlClient": "4.1.0",
-    "Dibware.StoredProcedureFrameworkCore.SqlServerExecutor": "0.1.0-*"
+    "StoredProcedureFrameworkCore": "0.1.0-*"
   },
 
   "frameworks": {

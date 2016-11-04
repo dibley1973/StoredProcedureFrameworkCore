@@ -1,9 +1,9 @@
-﻿{
+{
   "version": "0.1.0-*",
 
   "dependencies": {
-    "Dibware.StoredProcedureFrameworkCore": "0.1.0-*",
     "NETStandard.Library": "1.6.0",
+    "StoredProcedureFrameworkCore": "0.1.0-*",
     "System.Data.SqlClient": "4.1.0"
   },
 
