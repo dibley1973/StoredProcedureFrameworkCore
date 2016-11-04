@@ -1,8 +1,8 @@
-﻿using Dibware.StoredProcedureFrameworkCore.Tests.Fakes;
+﻿using Dibware.StoredProcedureFrameworkCore.UnitTests.Fakes;
 using FluentAssertions;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-namespace Dibware.StoredProcedureFrameworkCore.Tests.Tests
+namespace Dibware.StoredProcedureFrameworkCore.UnitTests.Tests
 {
     [TestClass]
     public class StoredProcedureContextTests

@@ -6,7 +6,7 @@ using Dibware.StoredProcedureFrameworkCore.StoredProcedureAttributes;
 using FluentAssertions;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-namespace Dibware.StoredProcedureFrameworkCore.Tests.Tests.Helpers.AttributeHelpers
+namespace Dibware.StoredProcedureFrameworkCore.UnitTests.Tests.Helpers.AttributeHelpers
 {
     [TestClass]
     public class TypeSchemaAttributeFinderTests

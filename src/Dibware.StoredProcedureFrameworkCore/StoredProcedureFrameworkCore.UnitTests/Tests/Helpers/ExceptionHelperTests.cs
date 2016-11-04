@@ -2,7 +2,7 @@
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Dibware.StoredProcedureFrameworkCore.Helpers;
 
-namespace Dibware.StoredProcedureFrameworkCore.Tests.Tests.Helpers
+namespace Dibware.StoredProcedureFrameworkCore.UnitTests.Tests.Helpers
 {
     [TestClass]
     public class ExceptionHelperTests

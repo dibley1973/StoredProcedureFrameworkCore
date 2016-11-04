@@ -3,7 +3,7 @@ using Dibware.StoredProcedureFrameworkCore.Exceptions;
 
 namespace Dibware.StoredProcedureFrameworkCore.Helpers
 {
-    public static class ExceptionHelper
+    internal static class ExceptionHelper
     {
         /// <summary>
         /// Creates the stored procedure construction exception with message parameter.

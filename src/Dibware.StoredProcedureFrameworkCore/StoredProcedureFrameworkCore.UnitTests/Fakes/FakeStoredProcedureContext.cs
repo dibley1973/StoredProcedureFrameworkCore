@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using Dibware.StoredProcedureFrameworkCore.StoredProcedureAttributes;
 
-namespace Dibware.StoredProcedureFrameworkCore.Tests.Fakes
+namespace Dibware.StoredProcedureFrameworkCore.UnitTests.Fakes
 {
     public class FakeStoredProcedureContext : StoredProcedureContext
     {

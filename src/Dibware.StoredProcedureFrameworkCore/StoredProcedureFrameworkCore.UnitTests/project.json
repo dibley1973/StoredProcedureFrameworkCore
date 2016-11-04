@@ -1,5 +1,5 @@
 {
-  "title": "StoredProcedureFrameworkCore.Tests",
+  "title": "Dibware.StoredProcedureFrameworkCore.Tests",
   "version": "0.1.0-*",
 
   "testRunner": "mstest",
