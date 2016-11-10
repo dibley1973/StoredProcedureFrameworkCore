@@ -1,4 +1,5 @@
-﻿using System.Data;
+﻿using System;
+using System.Data;
 using System.Data.SqlClient;
 using Microsoft.Extensions.Configuration;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -19,10 +20,22 @@ namespace Dibware.StoredProcedureFrameworkCore.SqlServerExecutor.IntegrationTest
         [TestInitialize]
         public void TestSetup()
         {
+
+            //var configurationBuilder = new ConfigurationBuilder()
+            //    .AddJsonFile("config.json")
+            //    .AddEnvironmentVariables();
+            //var config = configurationBuilder.Build();
+
             var builder = new ConfigurationBuilder();
             builder.AddJsonFile("appsettings.json");
             builder.AddInMemoryCollection();
+            builder.AddEnvironmentVariables();
             var config = builder.Build();
+
+            //var folderSettings = ConfigurationBinder.Bind<ConnectionStrings>(config.GetSection("ConnectionStrings"));
+            //var path = folderSettings.D["TestFolder1"];
+
+
             _connectionString = config.GetConnectionString("DefaultConnection");
             _connection = new SqlConnection(_connectionString);
             _executor = new SqlServerStoredProcedureExecutor(_connection);
