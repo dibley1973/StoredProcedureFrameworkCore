@@ -13,6 +13,7 @@ namespace Dibware.StoredProcedureFrameworkCore.SqlServerExecutor.IntegrationTest
         private SqlTransaction _transaction;
         //private TransactionScope _transaction; // Will have to wait until DotNetCore supports TransactionScope objects
         private SqlServerStoredProcedureExecutor _executor;
+        private IConfigurationRoot _config;
 
         protected SqlConnection Connection => _connection;
         protected SqlServerStoredProcedureExecutor Executor => _executor;
@@ -20,27 +21,20 @@ namespace Dibware.StoredProcedureFrameworkCore.SqlServerExecutor.IntegrationTest
         [TestInitialize]
         public void TestSetup()
         {
+            BuildConfig();
 
-            //var configurationBuilder = new ConfigurationBuilder()
-            //    .AddJsonFile("config.json")
-            //    .AddEnvironmentVariables();
-            //var config = configurationBuilder.Build();
-
-            var builder = new ConfigurationBuilder();
-            builder.AddJsonFile("appsettings.json");
-            builder.AddInMemoryCollection();
-            builder.AddEnvironmentVariables();
-            var config = builder.Build();
-
-            //var folderSettings = ConfigurationBinder.Bind<ConnectionStrings>(config.GetSection("ConnectionStrings"));
-            //var path = folderSettings.D["TestFolder1"];
-
-
-            _connectionString = config.GetConnectionString("DefaultConnection");
+            _connectionString = _config.GetConnectionString("DefaultConnection");
             _connection = new SqlConnection(_connectionString);
             _executor = new SqlServerStoredProcedureExecutor(_connection);
             _connection.Open();
             _transaction = _connection.BeginTransaction();
+        }
+
+        private void BuildConfig()
+        {
+            var builder = new ConfigurationBuilder();
+            builder.AddJsonFile("appsettings.json");
+            _config = builder.Build();
         }
 
         [TestCleanup]
