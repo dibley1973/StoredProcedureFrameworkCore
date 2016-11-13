@@ -46,7 +46,6 @@ namespace Dibware.StoredProcedureFrameworkCore.SqlServerExecutor.UnitTests.Tests
         #region PopulateMappedTargetFromReaderRecord
 
         [TestMethod]
-        //[Ignore] // Need to write some meaningful tests for this class!
         public void PopulateMappedTargetFromReaderRecord_WithObjectThatHasADefaultConstructor_ShouldNotThrowMissingException()
         {
             // ARRANGE
@@ -80,7 +79,7 @@ namespace Dibware.StoredProcedureFrameworkCore.SqlServerExecutor.UnitTests.Tests
 
         #endregion
 
-        private class TestObject
+        internal class TestObject
         {
             public TestObject()
             {
@@ -91,7 +90,7 @@ namespace Dibware.StoredProcedureFrameworkCore.SqlServerExecutor.UnitTests.Tests
             public string Name { get; set; }
         }
 
-        private class TestObjectWithoutConstructor
+        internal class TestObjectWithoutConstructor
         {
             public TestObjectWithoutConstructor(int id)
             {

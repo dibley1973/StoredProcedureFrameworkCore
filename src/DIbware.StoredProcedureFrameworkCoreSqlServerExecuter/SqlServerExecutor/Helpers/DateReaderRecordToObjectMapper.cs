@@ -92,7 +92,7 @@ namespace Dibware.StoredProcedureFrameworkCore.SqlServerExecutor.Helpers
         {
             _constructorInfo = _targetType.GetConstructor(Type.EmptyTypes);
 
-            EnsureTargetContructrorExists();
+            EnsureTargetContructorExists();
         }
 
         private void BuildTargetProperties()
@@ -110,9 +110,9 @@ namespace Dibware.StoredProcedureFrameworkCore.SqlServerExecutor.Helpers
             MappedTarget = Activator.CreateInstance(_targetType);
         }
 
-        private void EnsureTargetContructrorExists()
+        private void EnsureTargetContructorExists()
         {
-            var hasConstructor = _constructorInfo == null;
+            var hasConstructor = _constructorInfo != null;
             if (hasConstructor) return;
 
             var message = string.Format(ExceptionMessages.MissingConstructor, _targetType.Name);
