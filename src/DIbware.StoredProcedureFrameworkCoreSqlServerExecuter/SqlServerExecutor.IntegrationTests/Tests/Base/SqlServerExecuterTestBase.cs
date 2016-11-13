@@ -40,8 +40,8 @@ namespace Dibware.StoredProcedureFrameworkCore.SqlServerExecutor.IntegrationTest
         [TestCleanup]
         public void TestCleanup()
         {
-            CleanupConnection();
             CleanupTransaction();
+            CleanupConnection();
         }
 
         private void CleanupConnection()
