@@ -1,4 +1,5 @@
 ﻿using System;
+using Dibware.StoredProcedureFrameworkCore.Exceptions;
 using Dibware.StoredProcedureFrameworkCore.Helpers;
 
 namespace Dibware.StoredProcedureFrameworkCore
@@ -24,6 +25,12 @@ namespace Dibware.StoredProcedureFrameworkCore
         protected bool HasProcedureName()
         {
             return !string.IsNullOrEmpty(ProcedureName);
+        }
+
+        protected void SetProcedureName()
+        {
+            var procedureName = GetType().Name;
+            SetProcedureName(procedureName);
         }
 
         /// <summary>
@@ -86,6 +93,8 @@ namespace Dibware.StoredProcedureFrameworkCore
             if (storedProcedureExecutor == null) throw new ArgumentNullException(nameof(storedProcedureExecutor));
 
             _storedProcedureExecutor = storedProcedureExecutor;
+
+            SetProcedureName();
         }
 
         public TResultSetType ExecuteFor(TParameterType parameters)
@@ -104,10 +113,53 @@ namespace Dibware.StoredProcedureFrameworkCore
         {
             if (HasProcedureName()) return;
 
-            string message = "Stored procedure does not have a name set. Consider using " + 
+            var message = "Stored procedure does not have a name set. Consider using " + 
                 nameof(SetProcedureName) + 
                 " before calling this method.";
             throw ExceptionHelper.CreateStoredProcedureConstructionException(message);
+        }
+
+        /// <summary>
+        /// Ensures this instance is fully construcuted.
+        /// </summary>
+        /// <exception cref="StoredProcedureConstructionException">
+        /// this instance is not fully constrcuted
+        /// </exception>
+        public void EnsureIsFullyConstructed()
+        {
+            if (IsFullyConstructed()) return;
+
+            var message = ExceptionMessages.StoredProcedureIsNotFullyConstructed;
+            throw ExceptionHelper.CreateStoredProcedureConstructionException(message);
+        }
+
+        private bool HasReturnType()
+        {
+            return ReturnType != null;
+        }
+
+        /// <summary>
+        /// Determines if the procedure is fully constructed and in a valid 
+        /// state which can be called and executed
+        /// </summary>
+        /// <returns></returns>
+        public bool IsFullyConstructed()
+        {
+            return HasProcedureName() && HasReturnType();
+        }
+
+        /// <summary>
+        /// Gets the type of object to be returned as the result.
+        /// </summary>
+        /// <value>
+        /// The type of the result.
+        /// </value>
+        public Type ReturnType
+        {
+            get
+            {
+                return null; //TODO: implement typeof(TReturn);
+            }
         }
     }
 }

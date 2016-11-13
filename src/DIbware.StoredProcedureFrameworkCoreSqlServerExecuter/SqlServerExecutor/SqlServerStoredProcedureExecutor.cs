@@ -45,7 +45,11 @@ namespace Dibware.StoredProcedureFrameworkCore.SqlServerExecutor
         {
             if (storedProcedure == null) throw new ArgumentNullException(nameof(storedProcedure));
 
+            storedProcedure.EnsureIsFullyConstructed();
+
             string procedureFullName = storedProcedure.GetTwoPartName();
+
+
 
             throw new NotImplementedException();
         }
