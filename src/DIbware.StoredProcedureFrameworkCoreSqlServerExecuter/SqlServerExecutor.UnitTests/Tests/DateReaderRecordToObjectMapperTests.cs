@@ -51,11 +51,11 @@ namespace Dibware.StoredProcedureFrameworkCore.SqlServerExecutor.UnitTests.Tests
             // ARRANGE
             var dataReaderMock = new Mock<IDataReader>();
             var expectedReader = dataReaderMock.Object;
-            var expectedType = typeof(TestObject); ;
-            var mapper = new DateReaderRecordToObjectMapper(expectedReader, expectedType);
+            var expectedType = typeof(TestObject);
 
             // ACT
-            Action actual = () => mapper.PopulateMappedTargetFromReaderRecord();
+            // ReSharper disable once ObjectCreationAsStatement
+            Action actual = () => new DateReaderRecordToObjectMapper(expectedReader, expectedType);
 
             // ASSERT
             actual.ShouldNotThrow<MissingMemberException>();
@@ -68,24 +68,19 @@ namespace Dibware.StoredProcedureFrameworkCore.SqlServerExecutor.UnitTests.Tests
             var dataReaderMock = new Mock<IDataReader>();
             var expectedReader = dataReaderMock.Object;
             var expectedType = typeof(TestObjectWithoutConstructor);
-            var mapper = new DateReaderRecordToObjectMapper(expectedReader, expectedType);
 
             // ACT
-            Action actual = () => mapper.PopulateMappedTargetFromReaderRecord();
+            // ReSharper disable once ObjectCreationAsStatement
+            Action actual = () => new DateReaderRecordToObjectMapper(expectedReader, expectedType);
 
             // ASSERT
-            actual.ShouldThrow<MissingMemberException>();
+            actual.ShouldThrow<MissingMethodException>();
         }
 
         #endregion
 
         internal class TestObject
         {
-            public TestObject()
-            {
-                
-            }
-
             public int Id { get; set; }
             public string Name { get; set; }
         }
@@ -97,6 +92,7 @@ namespace Dibware.StoredProcedureFrameworkCore.SqlServerExecutor.UnitTests.Tests
                 Id = id;
             }
 
+            // ReSharper disable once UnusedAutoPropertyAccessor.Local
             private int Id { get; set; }
             public string Name { get; set; }
         }
