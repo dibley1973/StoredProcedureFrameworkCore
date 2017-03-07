@@ -1,7 +1,7 @@
 {
   "title": "Stored Procedure Framework for .Net Core",
   "description": "The .net core version of the original Stored Procedure Framework",
-  "version": "0.1.1-*",
+  "version": "1.1.1-*",
 
   "dependencies": {
     "NETStandard.Library": "1.6.1",
@@ -10,7 +10,7 @@
   },
 
   "frameworks": {
-    "netcoreapp1.0": {
+    "netstandard1.6": {
       "imports": [
         "dotnet5.6",
         "portable-net45+win8"
