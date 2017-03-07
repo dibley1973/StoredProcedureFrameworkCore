@@ -1,29 +1,24 @@
 {
-  "version": "0.1.0-*",
+  "version": "0.1.1-*",
 
   "testRunner": "mstest",
   "buildOptions": {
     "copyToOutput": ["appsettings.json"]
   },
   "dependencies": {
-    "dotnet-test-mstest": "1.1.1-preview",
-    "FluentAssertions": "4.14.0",
-    "System.Data.SqlClient": "4.1.0",
-    "MSTest.TestFramework": "1.0.0-preview",
-    "Microsoft.NETCore.App": {
-      "version": "1.0.1",
-      "type": "platform"
-    },
-    "Microsoft.Extensions.Options.ConfigurationExtensions": "1.0.0-rc2-final",
-    "Microsoft.Extensions.Configuration": "1.0.0",
-    "SqlServerExecutor": "0.1.0-*",
-    "StoredProcedureFrameworkCore": "0.1.0-*",
-    "Microsoft.Extensions.Configuration.Json": "1.0.0",
-    "Microsoft.Extensions.Configuration.EnvironmentVariables": "1.0.0"
+    "FluentAssertions": "4.19.0",
+    "System.Data.SqlClient": "4.3.0",
+    "MSTest.TestFramework": "1.1.11",
+    "NETStandard.Library": "1.6.1",
+    "Microsoft.Extensions.Options.ConfigurationExtensions": "1.1.1",
+    "Microsoft.Extensions.Configuration": "1.1.1",
+    "StoredProcedureFrameworkCore": "1.1.1-*",
+    "Microsoft.Extensions.Configuration.Json": "1.1.1",
+    "Microsoft.Extensions.Configuration.EnvironmentVariables": "1.1.1"
   },
 
   "frameworks": {
-    "netcoreapp1.0": {
+    "netstandard1.6": {
       "imports": [
         "dotnet5.6",
         "portable-net45+win8"

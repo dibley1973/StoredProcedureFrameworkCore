@@ -1,3 +1,8 @@
 {
-  "projects": [ "src/Dibware.StoredProcedureFrameworkCore" ]
+  "projects": [
+    "src/StoredProcedureFrameworkCore/Dibware.StoredProcedureFrameworkCore",
+    "src/StoredProcedureFrameworkCoreForEF/Dibware.StoredProcedureFrameworkCoreForEF",
+    "src/StoredProcedureFrameworkCoreSqlServerExecuter/Dibware.StoredProcedureFrameworkCoreSqlServerExecuter",
+    "src/Dibware.StoredProcedureFrameworkCore"
+  ]
 }

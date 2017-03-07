@@ -1,15 +1,18 @@
 {
-  "version": "0.1.0-*",
+  "version": "1.1.1-*",
 
   "dependencies": {
-    "NETStandard.Library": "1.6.0",
-    "StoredProcedureFrameworkCore": "0.1.0-*",
-    "System.Data.SqlClient": "4.1.0"
+    "NETStandard.Library": "1.6.1",
+    "StoredProcedureFrameworkCore": "1.1.1-*",
+    "System.Data.SqlClient": "4.3.0"
   },
 
   "frameworks": {
     "netstandard1.6": {
-      "imports": "dnxcore50"
+      "imports": [
+        "dotnet5.6",
+        "portable-net45+win8"
+      ]
     }
   }
 }

@@ -1,23 +1,18 @@
-﻿{
-  "version": "0.1.0-*",
+{
+  "version": "0.1.1-*",
 
   "testRunner": "mstest",
 
   "dependencies": {
-    "dotnet-test-mstest": "1.1.1-preview",
-    "FluentAssertions": "4.14.0",
-    "moq": "4.6.38-alpha",
-    "MSTest.TestFramework": "1.0.0-preview",
-    "Microsoft.NETCore.App": {
-      "version": "1.0.1",
-      "type": "platform"
-    },
-    "System.Data.SqlClient": "4.1.0",
-    "SqlServerExecutor": "0.1.0-*"
+    "FluentAssertions": "4.19.0",
+    "Moq": "4.7.1",
+    "MSTest.TestFramework": "1.1.11",
+    "NETStandard.Library": "1.6.1",
+    "System.Data.SqlClient": "4.3.0"
   },
 
   "frameworks": {
-    "netcoreapp1.0": {
+    "netstandard1.6": {
       "imports": [
         "dotnet5.6",
         "portable-net45+win8"
