@@ -1,6 +1,6 @@
 {
   "title": "Dibware.StoredProcedureFrameworkCore.Tests",
-  "version": "1.1.1-*",
+  "version": "0.1.1-*",
 
   "testRunner": "mstest",
 
@@ -9,7 +9,7 @@
     "FluentAssertions": "4.19.0",
     "Moq": "4.7.1",
     "MSTest.TestFramework": "1.1.11",
-    "StoredProcedureFrameworkCore": "1.1.1-*"
+    "StoredProcedureFrameworkCore": "0.1.1-*"
   },
 
   "frameworks": {

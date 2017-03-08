@@ -1,9 +1,9 @@
 {
-  "version": "1.1.1-*",
+  "version": "0.1.1-*",
 
   "dependencies": {
     "NETStandard.Library": "1.6.1",
-    "StoredProcedureFrameworkCore": "1.1.1-*",
+    "StoredProcedureFrameworkCore": "0.1.1-*",
     "System.Data.SqlClient": "4.3.0"
   },
 

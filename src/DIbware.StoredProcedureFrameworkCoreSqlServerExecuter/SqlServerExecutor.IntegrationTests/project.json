@@ -12,10 +12,10 @@
     "Microsoft.NETCore.App": "1.1.0",
     "Microsoft.Extensions.Options.ConfigurationExtensions": "1.1.1",
     "Microsoft.Extensions.Configuration": "1.1.1",
-    "StoredProcedureFrameworkCore": "1.1.1-*",
+    "StoredProcedureFrameworkCore": "0.1.1-*",
     "Microsoft.Extensions.Configuration.Json": "1.1.1",
     "Microsoft.Extensions.Configuration.EnvironmentVariables": "1.1.1",
-    "SqlServerExecutor": "1.1.1-*"
+    "SqlServerExecutor": "0.1.1-*"
   },
 
   "frameworks": {

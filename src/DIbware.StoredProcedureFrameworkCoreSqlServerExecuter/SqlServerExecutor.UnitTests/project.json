@@ -9,7 +9,7 @@
     "Microsoft.NETCore.App": "1.1.0",
     "MSTest.TestFramework": "1.1.11",
     "System.Data.SqlClient": "4.3.0",
-    "SqlServerExecutor": "1.1.1-*"
+    "SqlServerExecutor": "0.1.1-*"
   },
 
   "frameworks": {
