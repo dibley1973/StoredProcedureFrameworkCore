@@ -14,8 +14,11 @@
   "frameworks": {
     "netstandard1.6": {
       "imports": [
+        "net452",
         "dotnet5.6",
-        "portable-net45+win8"
+        "dnxcore50",
+        "portable-net45+win8",
+        "win10-x64"
       ]
     }
   }
