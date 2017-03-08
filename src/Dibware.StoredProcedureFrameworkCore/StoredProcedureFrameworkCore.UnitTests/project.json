@@ -5,7 +5,7 @@
   "testRunner": "mstest",
 
   "dependencies": {
-    "NETStandard.Library": "1.6.1",
+    "Microsoft.NETCore.App": "1.1.0",
     "FluentAssertions": "4.19.0",
     "Moq": "4.7.1",
     "MSTest.TestFramework": "1.1.11",
@@ -13,11 +13,10 @@
   },
 
   "frameworks": {
-    "netstandard1.6": {
-      "imports": [
-        "dotnet5.6",
-        "portable-net45+win8"
-      ]
-    }
+    "netcoreapp1.0": {}
+  },
+
+  "runtimes": {
+    "win10-x64": {}
   }
 }
