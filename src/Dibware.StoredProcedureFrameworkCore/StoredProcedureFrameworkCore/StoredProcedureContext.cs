@@ -5,6 +5,7 @@ using Dibware.StoredProcedureFrameworkCore.Extensions;
 using Dibware.StoredProcedureFrameworkCore.Generics;
 using Dibware.StoredProcedureFrameworkCore.Helpers.AttributeHelpers;
 using System.Linq;
+using Dibware.StoredProcedureFrameworkCore.Contracts;
 
 namespace Dibware.StoredProcedureFrameworkCore
 {

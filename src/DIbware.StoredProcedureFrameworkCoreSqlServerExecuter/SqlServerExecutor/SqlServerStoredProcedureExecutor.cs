@@ -1,14 +1,20 @@
 ﻿using System;
 using System.Data;
 using System.Data.SqlClient;
+using System.Reflection;
+using Dibware.StoredProcedureFrameworkCore.Contracts;
+using Dibware.StoredProcedureFrameworkCore.SqlServerExecutor.Constants;
 
 namespace Dibware.StoredProcedureFrameworkCore.SqlServerExecutor
 {
     public class SqlServerStoredProcedureExecutor : IStoredProcedureExecutor
     {
-        private bool _disposed;
         private SqlConnection _sqlConnection;
         private readonly bool _ownsConnection;
+        private bool _connectionAlreadyOpen;
+        private string _programmabilityObjectName;
+        protected IDbCommand Command { get; private set; }
+        public bool Disposed { get; private set; }
 
         public SqlServerStoredProcedureExecutor(string nameOrConnectionString)
         {
@@ -44,13 +50,31 @@ namespace Dibware.StoredProcedureFrameworkCore.SqlServerExecutor
             TParameterType parameters)
         {
             if (storedProcedure == null) throw new ArgumentNullException(nameof(storedProcedure));
+            if (Disposed) throw new ObjectDisposedException("Cannot call Execute when this object is disposed");
 
             storedProcedure.EnsureIsFullyConstructed();
 
-            string procedureFullName = storedProcedure.GetTwoPartName();
+            _programmabilityObjectName = storedProcedure.GetTwoPartName();
 
+            CacheOriginalConnectionState();
 
-
+            try
+            {
+                OpenClosedConnection();
+                CreateCommand();
+                //ExecuteCommand();
+            }
+            catch (Exception ex)
+            {
+                AddMoreInformativeInformationToExecuteError(ref ex);
+                throw;
+            }
+            finally
+            {
+                DisposeCommand();
+                RestoreOriginalConnectionState();
+            }
+            
             throw new NotImplementedException();
         }
 
@@ -66,7 +90,7 @@ namespace Dibware.StoredProcedureFrameworkCore.SqlServerExecutor
 
         private void Dispose(bool disposing)
         {
-            if (_disposed) return;
+            if (Disposed) return;
 
             if (disposing)
             {
@@ -76,7 +100,24 @@ namespace Dibware.StoredProcedureFrameworkCore.SqlServerExecutor
             // Set large fields to null.
             CleanUpConnectionIfOwned();
 
-            _disposed = true;
+            Disposed = true;
+        }
+
+        private void AddMoreInformativeInformationToExecuteError(ref Exception ex)
+        {
+            var detailedMessage = string.Format(
+                ExceptionMessages.ErrorReadingStoredProcedure,
+                _programmabilityObjectName,
+                ex.Message);
+            Type exceptionType = ex.GetType();
+            var fieldInfo = exceptionType.GetField("_message", BindingFlags.Instance | BindingFlags.NonPublic);
+
+            if (fieldInfo != null) fieldInfo.SetValue(ex, detailedMessage);
+        }
+
+        private void CacheOriginalConnectionState()
+        {
+            _connectionAlreadyOpen = _sqlConnection.State == ConnectionState.Open;
         }
 
         private void CleanUpConnectionIfOwned()
@@ -92,6 +133,51 @@ namespace Dibware.StoredProcedureFrameworkCore.SqlServerExecutor
 
             _sqlConnection.Dispose();
             _sqlConnection = null;
+        }
+
+        private void CreateCommand()
+        {
+            DisposeCommand();
+
+            //IDbCommandCreator creator = CreateCommandCreator();
+
+            //bool hasCommandTimeoutOverride = _commandTimeoutOverride.HasValue;
+            //if (hasCommandTimeoutOverride)
+            //{
+            //    creator.WithCommandTimeout(_commandTimeoutOverride.Value);
+            //}
+
+            //if (HasParameters)
+            //{
+            //    creator.WithParameters(_procedureParameters);
+            //}
+
+            //if (HasTransaction)
+            //{
+            //    creator.WithTransaction(_transaction);
+            //}
+
+            //Command = creator
+            //        .BuildCommand()
+            //        .Command;
+        }
+
+        private void DisposeCommand()
+        {
+            if (Command == null) return;
+
+            Command.Dispose();
+            Command = null;
+        }
+
+        private void OpenClosedConnection()
+        {
+            if (!_connectionAlreadyOpen) _sqlConnection.Open();
+        }
+
+        private void RestoreOriginalConnectionState()
+        {
+            if (!_connectionAlreadyOpen) _sqlConnection.Close();
         }
     }
 }

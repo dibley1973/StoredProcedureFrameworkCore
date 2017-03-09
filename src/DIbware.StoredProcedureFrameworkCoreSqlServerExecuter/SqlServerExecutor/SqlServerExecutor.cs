@@ -1,12 +1,13 @@
 ﻿using System;
 using System.Data;
 using System.Data.SqlClient;
+using Dibware.StoredProcedureFrameworkCore.Contracts;
 
 namespace Dibware.StoredProcedureFrameworkCore.SqlServerExecutor
 {
     public class SqlServerExecutor : IStoredProcedureExecutor
     {
-        private  SqlConnection _sqlConnection;
+        private SqlConnection _sqlConnection;
         private readonly bool _ownsConnection;
 
         public SqlServerExecutor(string nameOrConnectionString)
@@ -34,7 +35,7 @@ namespace Dibware.StoredProcedureFrameworkCore.SqlServerExecutor
         /// <value>
         ///   <c>true</c> if disposed; otherwise, <c>false</c>.
         /// </value>
-        private bool Disposed { get; set; }
+        public bool Disposed { get; private set; }
 
         /// <summary>
         /// Finalizes an instance of the <see cref="SqlServerExecutor"/> class.

@@ -1,4 +1,5 @@
-﻿using Dibware.StoredProcedureFrameworkCore.UnitTests.Fakes;
+﻿using Dibware.StoredProcedureFrameworkCore.Contracts;
+using Dibware.StoredProcedureFrameworkCore.UnitTests.Fakes;
 using FluentAssertions;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 

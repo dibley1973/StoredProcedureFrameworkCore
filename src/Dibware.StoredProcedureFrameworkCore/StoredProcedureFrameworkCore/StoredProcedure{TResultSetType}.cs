@@ -1,4 +1,5 @@
 ﻿using System;
+using Dibware.StoredProcedureFrameworkCore.Contracts;
 
 namespace Dibware.StoredProcedureFrameworkCore
 {

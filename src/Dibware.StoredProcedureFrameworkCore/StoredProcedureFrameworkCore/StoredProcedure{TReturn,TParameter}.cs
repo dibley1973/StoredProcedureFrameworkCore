@@ -1,4 +1,5 @@
 ﻿using System;
+using Dibware.StoredProcedureFrameworkCore.Contracts;
 using Dibware.StoredProcedureFrameworkCore.Exceptions;
 using Dibware.StoredProcedureFrameworkCore.Helpers;
 

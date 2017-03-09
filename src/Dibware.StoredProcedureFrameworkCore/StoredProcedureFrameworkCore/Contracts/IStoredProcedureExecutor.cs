@@ -1,8 +1,8 @@
 ﻿using System;
 
-namespace Dibware.StoredProcedureFrameworkCore
+namespace Dibware.StoredProcedureFrameworkCore.Contracts
 {
-    public interface IStoredProcedureExecutor : IDisposable
+    public interface IStoredProcedureExecutor : IDisposable, IDisposed
     {
         string DefaultSchemaName { get; }
         bool HasDefaultSchemaName { get; }

@@ -1,4 +1,5 @@
 ﻿
+using Dibware.StoredProcedureFrameworkCore.Contracts;
 using Dibware.StoredProcedureFrameworkCore.Types;
 
 namespace Dibware.StoredProcedureFrameworkCore.SqlServerExecutor.IntegrationTests.StoredProcedures

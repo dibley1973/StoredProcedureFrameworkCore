@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using Dibware.StoredProcedureFrameworkCore.Contracts;
 using Dibware.StoredProcedureFrameworkCore.StoredProcedureAttributes;
 
 namespace Dibware.StoredProcedureFrameworkCore.UnitTests.Fakes

@@ -1,4 +1,6 @@
-﻿namespace Dibware.StoredProcedureFrameworkCore.UnitTests.Fakes
+﻿using Dibware.StoredProcedureFrameworkCore.Contracts;
+
+namespace Dibware.StoredProcedureFrameworkCore.UnitTests.Fakes
 {
     public class FakeStoredProcedureExecutor : IStoredProcedureExecutor
     {
@@ -18,5 +20,6 @@
         }
 
         public void Dispose() { /* No-Op */ }
+        public bool Disposed => false;
     }
 }
