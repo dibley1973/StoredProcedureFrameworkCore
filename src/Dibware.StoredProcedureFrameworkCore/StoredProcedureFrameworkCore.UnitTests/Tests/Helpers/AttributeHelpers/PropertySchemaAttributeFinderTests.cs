@@ -5,16 +5,16 @@ using Dibware.StoredProcedureFrameworkCore.Generics;
 using Dibware.StoredProcedureFrameworkCore.Helpers.AttributeHelpers;
 using Dibware.StoredProcedureFrameworkCore.StoredProcedureAttributes;
 using FluentAssertions;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using NUnit.Framework;
 
 namespace Dibware.StoredProcedureFrameworkCore.UnitTests.Tests.Helpers.AttributeHelpers
 {
-    [TestClass]
+    [TestFixture]
     public class PropertySchemaAttributeFinderTests
     {
         #region Constructor
 
-        [TestMethod]
+        [Test]
         public void Constructor_WhenConstructedWithNullProperty_ThrowsException()
         {
             // ARRANGE
@@ -27,7 +27,7 @@ namespace Dibware.StoredProcedureFrameworkCore.UnitTests.Tests.Helpers.Attribute
             actual.ShouldThrow<ArgumentNullException>();
         }
 
-        [TestMethod]
+        [Test]
         public void Constructor_WhenGivenValidValue_DoesNotThrowException()
         {
             // ARRANGE
@@ -46,7 +46,7 @@ namespace Dibware.StoredProcedureFrameworkCore.UnitTests.Tests.Helpers.Attribute
 
         #region HasFoundAttribute
 
-        [TestMethod]
+        [Test]
         public void HasAttribute_WhenCalledAfterInstantiationAndPropertyDoesNotHaveAtrribute_ReturnsFalse()
         {
             // ARRANGE
@@ -60,7 +60,7 @@ namespace Dibware.StoredProcedureFrameworkCore.UnitTests.Tests.Helpers.Attribute
             actual.Should().BeFalse();
         }
 
-        [TestMethod]
+        [Test]
         public void HasAttribute_WhenCalledAfterInstantiationAndPropertyDoesHaveAtrribute_ReturnsTrue()
         {
             // ARRANGE
@@ -78,7 +78,7 @@ namespace Dibware.StoredProcedureFrameworkCore.UnitTests.Tests.Helpers.Attribute
 
         #region GetResult
 
-        [TestMethod]
+        [Test]
         public void GetResult_WhenCalledAfterInstantiationAndPropertyDoesNotHaveAtrribute_ReturnsEmptyMaybe()
         {
             // ARRANGE
@@ -93,7 +93,7 @@ namespace Dibware.StoredProcedureFrameworkCore.UnitTests.Tests.Helpers.Attribute
             actual.Should().BeNull();
         }
 
-        [TestMethod]
+        [Test]
         public void GetResult_WhenCalledAfterInstantiationAndPropertyDoesHaveAtrribute_ReturnsMaybePopulatedWithInstanceOfAttribute()
         {
             // ARRANGE

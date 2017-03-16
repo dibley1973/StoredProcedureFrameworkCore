@@ -1,13 +1,13 @@
 ﻿using System;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using NUnit.Framework;
 using Dibware.StoredProcedureFrameworkCore.Helpers;
 
 namespace Dibware.StoredProcedureFrameworkCore.UnitTests.Tests.Helpers
 {
-    [TestClass]
+    [TestFixture]
     public class ExceptionHelperTests
     {
-        [TestMethod]
+        [Test]
         public void CreateStoredProcedureConstructionException_ConstructedWithMessage_ReturnsCorrectMessage()
         {
             // ARRANGE
@@ -21,7 +21,7 @@ namespace Dibware.StoredProcedureFrameworkCore.UnitTests.Tests.Helpers
             Assert.AreEqual(expectedMessage, actualMessage);
         }
 
-        [TestMethod]
+        [Test]
         public void
             CreateStoredProcedureConstructionException_ConstructedWithMessageAndInnerException_ReturnsBothCorrectly()
         {
@@ -40,7 +40,7 @@ namespace Dibware.StoredProcedureFrameworkCore.UnitTests.Tests.Helpers
             Assert.AreEqual(exception.InnerException, expectedInnerException);
         }
 
-        [TestMethod]
+        [Test]
         public void CreateSqlFunctionConstructionException_ConstructedWithMessage_ReturnsCorrectMessage()
         {
             // ARRANGE

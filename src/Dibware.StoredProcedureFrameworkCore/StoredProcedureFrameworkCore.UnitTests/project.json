@@ -1,22 +1,24 @@
 {
-  "title": "Dibware.StoredProcedureFrameworkCore.Tests",
-  "version": "0.1.1-*",
-
-  "testRunner": "mstest",
-
   "dependencies": {
-    "Microsoft.NETCore.App": "1.1.0",
-    "FluentAssertions": "4.19.0",
+    "dotnet-test-nunit": "3.4.0-beta-3",
+    "FluentAssertions": "4.19.2",
     "Moq": "4.7.1",
-    "MSTest.TestFramework": "1.1.11",
+    "NUnit": "3.6.1",
+    "NUnit.Runners": "3.6.1",
     "StoredProcedureFrameworkCore": "0.1.1-*"
   },
-
   "frameworks": {
-    "netcoreapp1.0": {}
+    "netcoreapp1.0": {
+      "imports": "portable-net45+win8",
+      "dependencies": {
+        "Microsoft.NETCore.App": {
+          "version": "1.0.0-*",
+          "type": "platform"
+        }
+      }
+    }
   },
-
-  "runtimes": {
-    "win10-x64": {}
-  }
+  "testRunner": "nunit",
+  "title": "Dibware.StoredProcedureFrameworkCore.Tests",
+  "version": "0.1.1-*"
 }

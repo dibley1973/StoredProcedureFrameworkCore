@@ -1,11 +1,11 @@
 ﻿using Dibware.StoredProcedureFrameworkCore.Contracts;
 using Dibware.StoredProcedureFrameworkCore.UnitTests.Fakes;
 using FluentAssertions;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using NUnit.Framework;
 
 namespace Dibware.StoredProcedureFrameworkCore.UnitTests.Tests
 {
-    [TestClass]
+    [TestFixture]
     public class StoredProcedureContextTests
     {
         private static readonly IStoredProcedureExecutor Executor;
@@ -15,12 +15,7 @@ namespace Dibware.StoredProcedureFrameworkCore.UnitTests.Tests
             Executor = new FakeStoredProcedureExecutor();
         }
 
-        [TestInitialize]
-        public void TestInitialize()
-        {
-        }
-
-        [TestMethod]
+        [Test]
         public void ProcedureProperty_AfterInstantiation_IsNotNull()
         {
             // ARRANGE
@@ -33,7 +28,7 @@ namespace Dibware.StoredProcedureFrameworkCore.UnitTests.Tests
             actual.Should().NotBeNull();
         }
 
-        [TestMethod]
+        [Test]
         public void ProcedurePropertyWithoutNameAttribute_AfterInstantiation_HasCorrectName()
         {
             // ARRANGE
@@ -46,7 +41,7 @@ namespace Dibware.StoredProcedureFrameworkCore.UnitTests.Tests
             actual.ProcedureName.Should().Be("Procedure1");
         }
 
-        [TestMethod]
+        [Test]
         public void ProcedurePropertyWithNameAttribute_AfterInstantiation_HasCorrectName()
         {
             // ARRANGE
@@ -59,7 +54,7 @@ namespace Dibware.StoredProcedureFrameworkCore.UnitTests.Tests
             actual.ProcedureName.Should().Be("ProcedureX");
         }
 
-        [TestMethod]
+        [Test]
         public void ProcedurePropertyWithoutSchemaAttribute_AfterInstantiation_HasDefaultSchema()
         {
             // ARRANGE
@@ -72,7 +67,7 @@ namespace Dibware.StoredProcedureFrameworkCore.UnitTests.Tests
             actual.SchemaName.Should().Be("dbo");
         }
 
-        [TestMethod]
+        [Test]
         public void ProcedurePropertyWithSchemaAttribute_AfterInstantiation_HasCorrectSchema()
         {
             // ARRANGE
