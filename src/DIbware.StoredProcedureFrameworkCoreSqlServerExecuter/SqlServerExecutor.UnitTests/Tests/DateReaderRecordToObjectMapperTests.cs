@@ -1,18 +1,18 @@
 ﻿using System;
 using System.Data;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using Dibware.StoredProcedureFrameworkCore.SqlServerExecutor.Helpers;
 using FluentAssertions;
+using NUnit.Framework;
 
 namespace Dibware.StoredProcedureFrameworkCore.SqlServerExecutor.UnitTests.Tests
 {
-    [TestClass]
+    [TestFixture]
     public class DateReaderRecordToObjectMapperTests
     {
         #region Constructors
 
-        [TestMethod]
+        [Test]
         public void Construct_WhenConstructedWithNullDataReader_ThrowsExecption()
         {
             // ARRANGE
@@ -26,7 +26,7 @@ namespace Dibware.StoredProcedureFrameworkCore.SqlServerExecutor.UnitTests.Tests
             actual.ShouldThrow<ArgumentNullException>();
         }
 
-        [TestMethod]
+        [Test]
         public void Construct_WhenConstructedWithNullTargetType_ThrowsExecption()
         {
             // ARRANGE
@@ -45,7 +45,7 @@ namespace Dibware.StoredProcedureFrameworkCore.SqlServerExecutor.UnitTests.Tests
 
         #region PopulateMappedTargetFromReaderRecord
 
-        [TestMethod]
+        [Test]
         public void PopulateMappedTargetFromReaderRecord_WithObjectThatHasADefaultConstructor_ShouldNotThrowMissingException()
         {
             // ARRANGE
@@ -61,7 +61,7 @@ namespace Dibware.StoredProcedureFrameworkCore.SqlServerExecutor.UnitTests.Tests
             actual.ShouldNotThrow<MissingMemberException>();
         }
 
-        [TestMethod]
+        [Test]
         public void PopulateMappedTargetFromReaderRecord_WithObjectThatHasNoDefaultConstructor_ThrowsException()
         {
             // ARRANGE
