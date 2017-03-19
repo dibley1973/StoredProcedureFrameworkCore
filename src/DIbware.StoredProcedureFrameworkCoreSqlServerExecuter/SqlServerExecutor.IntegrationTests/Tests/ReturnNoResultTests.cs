@@ -2,14 +2,14 @@
 using Dibware.StoredProcedureFrameworkCore.SqlServerExecutor.IntegrationTests.Tests.Base;
 using Dibware.StoredProcedureFrameworkCore.Types;
 using FluentAssertions;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using NUnit.Framework;
 
 namespace Dibware.StoredProcedureFrameworkCore.SqlServerExecutor.IntegrationTests.Tests
 {
-    [TestClass]
+    [TestFixture]
     public class ReturnNoResultTests : SqlServerExecuterTestBase
     {
-        [TestMethod]
+        [Test]
         public void ReturnNoResultsProcedure_ReturnsNull()
         {
             // ARRANGE

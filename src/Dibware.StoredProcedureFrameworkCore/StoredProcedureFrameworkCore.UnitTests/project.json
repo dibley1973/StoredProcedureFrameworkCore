@@ -7,6 +7,7 @@
     "NUnit.Runners": "3.6.1",
     "StoredProcedureFrameworkCore": "0.1.1-*"
   },
+
   "frameworks": {
     "netcoreapp1.0": {
       "imports": "portable-net45+win8",
@@ -18,7 +19,9 @@
       }
     }
   },
+  
   "testRunner": "nunit",
+  
   "title": "Dibware.StoredProcedureFrameworkCore.Tests",
   "version": "0.1.1-*"
 }

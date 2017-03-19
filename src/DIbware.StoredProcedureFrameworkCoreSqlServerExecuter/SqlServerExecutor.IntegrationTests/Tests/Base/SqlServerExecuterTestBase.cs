@@ -2,10 +2,11 @@
 using System.Data;
 using System.Data.SqlClient;
 using Microsoft.Extensions.Configuration;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using NUnit.Framework;
 
 namespace Dibware.StoredProcedureFrameworkCore.SqlServerExecutor.IntegrationTests.Tests.Base
 {
+    [SetUpFixture]
     public class SqlServerExecuterTestBase
     {
         private string _connectionString;
@@ -18,7 +19,7 @@ namespace Dibware.StoredProcedureFrameworkCore.SqlServerExecutor.IntegrationTest
         protected SqlConnection Connection => _connection;
         protected SqlServerStoredProcedureExecutor Executor => _executor;
 
-        [TestInitialize]
+        [SetUp]
         public void TestSetup()
         {
             BuildConfig();
@@ -37,7 +38,7 @@ namespace Dibware.StoredProcedureFrameworkCore.SqlServerExecutor.IntegrationTest
             _config = builder.Build();
         }
 
-        [TestCleanup]
+        [TearDown]
         public void TestCleanup()
         {
             CleanupTransaction();
